@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       routerConfig: appRoutes,
       title: 'Encuestas Utn',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
     );

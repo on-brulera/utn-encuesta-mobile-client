@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:encuestas_utn/presentation/widgets/widgets.dart';
+import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,6 +18,8 @@ class _LoginScreenState extends State<LoginScreen>
   Animation<double>? _animacaoBlur;
   Animation<double>? _animacaoFade;
   Animation<double>? _animacaoSize;
+  String _usuario = '';
+  String _contrasena = '';
 
   @override
   void initState() {
@@ -79,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen>
                     height: 400,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/login/fondo.png'),
+                        image: AssetImage(AppAssets.fondoPerfil),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -116,10 +119,15 @@ class _LoginScreenState extends State<LoginScreen>
                           ),
                           child: Column(
                             children: [
-                              const CustomInput(
+                              CustomInput(
+                                onChanged: (value) {
+                                  setState(() {
+                                    _usuario = value;
+                                  }); // Guarda el valor del usuario
+                                },
                                 hint: 'usuario',
                                 obscure: false,
-                                icon: Icon(Icons.person),
+                                icon: const Icon(Icons.person),
                               ),
                               Container(
                                 decoration: const BoxDecoration(
@@ -132,10 +140,15 @@ class _LoginScreenState extends State<LoginScreen>
                                   ],
                                 ),
                               ),
-                              const CustomInput(
-                                hint: 'pasword',
+                              CustomInput(
+                                onChanged: (value) {
+                                  setState(() {
+                                    _contrasena = value;
+                                  }); // Guarda el valor de la contraseña
+                                },
+                                hint: 'contraseña',
                                 obscure: true,
-                                icon: Icon(Icons.lock),
+                                icon: const Icon(Icons.lock),
                               ),
                             ],
                           ),
@@ -143,7 +156,11 @@ class _LoginScreenState extends State<LoginScreen>
                       },
                     ),
                     const SizedBox(height: 20),
-                    CustomButtonAnimate(controller: _controller!),
+                    CustomButtonAnimate(
+                      controller: _controller!,
+                      usuario: _usuario,
+                      password: _contrasena,
+                    ),
                     const SizedBox(height: 10),
                     FadeTransition(
                       opacity: _animacaoFade!,

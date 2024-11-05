@@ -1,4 +1,4 @@
-import 'package:encuestas_utn/presentation/screens/docente/home/home_docente_screen.dart';
+import 'package:encuestas_utn/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,8 +8,14 @@ class CustomButtonAnimate extends StatelessWidget {
   final Animation<double> altura;
   final Animation<double> radius;
   final Animation<double> opacidade;
+  final String usuario;
+  final String password;
 
-  CustomButtonAnimate({super.key, required this.controller})
+  CustomButtonAnimate(
+      {super.key,
+      required this.controller,
+      required this.usuario,
+      required this.password})
       : largura = Tween<double>(
           begin: 0,
           end: 500,
@@ -49,10 +55,27 @@ class CustomButtonAnimate extends StatelessWidget {
 
   Widget _buildAnimation(BuildContext context, Widget? widget) {
     return InkWell(
-      onTap: () {
-        context.go('/${HomeDocenteScreen.screenName}');
+      onTap: () {        
+        // Lógica para verificar usuario y contraseña
+        if (password == '') {
+          // Comprueba si la contraseña es correcta
+          if (usuario.startsWith('e')) {
+            context.go('/${EstudianteMenuDScreen.screenName}');
+          } else if (usuario.startsWith('d')) {
+            context.go('/${DocenteMenuDScreen.screenName}');
+          } else {
+            // Mostrar error si el usuario no tiene prefijo correcto
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Usuario inválido')),
+            );
+          }
+        } else {
+          // Mostrar error si la contraseña es incorrecta
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Contraseña incorrecta')),
+          );
+        }
       },
-
       child: Container(
         width: largura.value,
         height: altura.value,

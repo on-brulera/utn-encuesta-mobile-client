@@ -4,14 +4,59 @@ import 'package:go_router/go_router.dart';
 // GoRouter configuration
 final appRoutes = GoRouter(
   initialLocation: '/${LoginScreen.screenName}',
-  routes: [    
+  routes: [
+    //RUTAS PARA DOCENTES Y ESTUDIANTES
     GoRoute(
       path: '/${LoginScreen.screenName}',
       builder: (context, state) => const LoginScreen(),
     ),
+
+    //RUTAS PARA EL DOCENTE
     GoRoute(
-      path: '/${HomeDocenteScreen.screenName}',
-      builder: (context, state) => const HomeDocenteScreen(),
+      path: '/${DocenteMenuDScreen.screenName}',
+      builder: (context, state) => const DocenteMenuDScreen(),
     ),
+    GoRoute(
+      path: '/${DocenteDisenarEncuestaScreen.screenName}',
+      builder: (context, state) => const DocenteDisenarEncuestaScreen(),
+    ),
+    GoRoute(
+      path: '/${DocenteCursoAsignacionScreen.screenName}',
+      builder: (context, state) => const DocenteCursoAsignacionScreen(),
+    ),
+    GoRoute(
+      path: '/${DocenteEstadisticaScreen.screenName}',
+      builder: (context, state) => const DocenteEstadisticaScreen(),
+    ),
+    GoRoute(
+      path: '/${DocentePerfilScreen.screenName}',
+      builder: (context, state) => const DocentePerfilScreen(),      
+    ),
+    GoRoute(
+      path: '/${DocenteListaEncuestaScreen.screenName}',
+      builder: (context, state) => const DocenteListaEncuestaScreen(),
+    ),
+
+    //RUTAS PARA EL ESTUDIANTE
+    GoRoute(
+      path: '/${EstudiantePerfilScreen.screenName}',
+      builder: (context, state) => const EstudiantePerfilScreen(),
+    ), 
+    GoRoute(
+      path: '/${EstudianteCursoScreen.screenName}',
+      builder: (context, state) => const EstudianteCursoScreen(),
+    ),
+    GoRoute(
+      path: '/${EstudianteEstadisticaScreen.screenName}',
+      builder: (context, state) => const EstudianteEstadisticaScreen(),
+    ),
+    GoRoute(
+      path: '/${EstudianteMirarEncuestaScreen.screenName}',
+      builder: (context, state) => const EstudianteMirarEncuestaScreen(),
+    ),
+    GoRoute(
+      path: '/${EstudianteMenuDScreen.screenName}',
+      builder: (context, state) => const EstudianteMenuDScreen(),
+    ),    
   ],
 );
