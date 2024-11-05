@@ -1,3 +1,5 @@
+export 'package:encuestas_utn/presentation/widgets/perfil/custom_imagen_perfil.dart';
+
 export 'package:encuestas_utn/presentation/widgets/encuestas/custom_encuesta_item_list.dart';
 
 export 'package:encuestas_utn/presentation/widgets/encuestas/custom_button_encuesta_lista.dart';

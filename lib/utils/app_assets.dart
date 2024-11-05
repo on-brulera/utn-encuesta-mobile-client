@@ -6,4 +6,6 @@ class AppAssets {
   static const String perfil = 'assets/home/perfil.png';
   //FONDO LOGIN
   static const String fondoPerfil = 'assets/login/fondo.png';
+  //ICONOS DEL PERFIL
+  static const String academico = 'assets/perfil/student.png';
 }

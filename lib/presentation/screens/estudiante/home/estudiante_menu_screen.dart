@@ -12,12 +12,15 @@ class EstudianteMenuDScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     //ITEMS PARA LOS MODULOS
-    opcionesMenuEstudiante[0].callback = () => context.go('/${EstudianteMirarEncuestaScreen.screenName}');
-    opcionesMenuEstudiante[1].callback = () => context.go('/${EstudianteCursoScreen.screenName}');
-    opcionesMenuEstudiante[2].callback = () => context.go('/${DocenteEstadisticaScreen.screenName}');
-    opcionesMenuEstudiante[3].callback = () => context.go('/${DocentePerfilScreen.screenName}');
+    opcionesMenuEstudiante[0].callback =
+        () => context.go('/${EstudianteMirarEncuestaScreen.screenName}');
+    opcionesMenuEstudiante[1].callback =
+        () => context.go('/${EstudianteCursoScreen.screenName}');
+    opcionesMenuEstudiante[2].callback =
+        () => context.go('/${EstudianteEstadisticaScreen.screenName}');
+    opcionesMenuEstudiante[3].callback =
+        () => context.go('/${EstudiantePerfilScreen.screenName}');
 
     List<Notificacion> notificaciones = [
       Notificacion(texto: 'Tienes 1 encuesta por responder', callback: () {}),

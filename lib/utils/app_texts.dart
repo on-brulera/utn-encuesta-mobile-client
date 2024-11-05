@@ -34,4 +34,11 @@ class AppTexts {
           fontWeight: FontWeight.w400,
         ),
       );
+  static perfilText(String text) => Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+      );
 }
