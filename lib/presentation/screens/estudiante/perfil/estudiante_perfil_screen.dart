@@ -32,7 +32,7 @@ class _EstudiantePerfilScreenState extends State<EstudiantePerfilScreen> {
           title: AppTexts.title('Perfil'),
           actions: [
             IconButton.outlined(
-              onPressed: () => context.go('/${DocenteMenuDScreen.screenName}'),
+              onPressed: () => context.go('/${EstudianteMenuDScreen.screenName}'),
               icon: const Icon(Icons.exit_to_app_rounded),
             ),
             AppSpaces.horizontal20,

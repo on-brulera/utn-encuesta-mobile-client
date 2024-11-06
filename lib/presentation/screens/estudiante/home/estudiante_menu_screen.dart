@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:encuestas_utn/configuration/const/menu_opcion.dart';
+import 'package:encuestas_utn/domain/entities/mensaje.dart';
 import 'package:encuestas_utn/presentation/screens/screens.dart';
 import 'package:encuestas_utn/presentation/widgets/widgets.dart';
 import 'package:encuestas_utn/utils/utils.dart';
@@ -23,11 +24,17 @@ class EstudianteMenuDScreen extends StatelessWidget {
         () => context.go('/${EstudiantePerfilScreen.screenName}');
 
     List<Notificacion> notificaciones = [
-      Notificacion(texto: 'Tienes 1 encuesta por responder', callback: () {}),
-      Notificacion(texto: 'Tienes 10 encuestas respondidas', callback: () {}),
+      Notificacion(
+          texto: 'Tienes 1 encuesta por responder',
+          callback: () =>
+              context.go('/${EstudianteEncuestasResponder.screenName}')),
       Notificacion(
           texto: 'Mire las estadísticas de la última encuesta ',
           callback: () {}),
+      Notificacion(
+          texto: 'Habla con IA sobre tu estilo de aprendizaje',
+          callback: () => context.go('/${ChatScreen.screenName}',
+              extra: UsuarioChat.estudiante)),
     ];
 
     return Scaffold(

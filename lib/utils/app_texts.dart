@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AppTexts {
   static title(String text) => Text(
@@ -41,4 +42,21 @@ class AppTexts {
           fontSize: 15,
         ),
       );
+
+  static fechaEncuesta(String fecha) {
+    {
+      final DateTime today = DateTime.now();
+      final DateTime fechaEncuesta = DateFormat('dd-MM-yyyy').parse(fecha);
+      final bool isPastDate = fechaEncuesta.isBefore(today);
+      return Text(
+        isPastDate ? 'Cerró el $fecha' : 'Cierra el $fecha',
+        style: TextStyle(
+          fontSize: 10,
+          color: isPastDate
+              ? const Color.fromARGB(255, 144, 38, 31)
+              : const Color.fromARGB(255, 6, 123, 22), // Cambia el color aquí
+        ),
+      );
+    }
+  }
 }

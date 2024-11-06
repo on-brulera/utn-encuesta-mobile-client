@@ -43,7 +43,7 @@ class DocenteListaEncuestaScreen extends StatelessWidget {
 
 final List<Encuesta> encuestas = [
   Encuesta(
-      titulo: 'Inteligencia Múltidimensional ',
+      titulo: 'Encuesta de inteligencias multiples',
       autor: 'Felder & Silverman',
       numPreguntas: 12),
   Encuesta(

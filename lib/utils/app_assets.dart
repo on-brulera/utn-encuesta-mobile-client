@@ -8,4 +8,6 @@ class AppAssets {
   static const String fondoPerfil = 'assets/login/fondo.png';
   //ICONOS DEL PERFIL
   static const String academico = 'assets/perfil/student.png';
+  //ICONOS DEL CHATBOT
+  static const String capibara = 'assets/chat/capibara.png';
 }
