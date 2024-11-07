@@ -32,34 +32,35 @@ class _EstudiantePerfilScreenState extends State<EstudiantePerfilScreen> {
           title: AppTexts.title('Perfil'),
           actions: [
             IconButton.outlined(
-              onPressed: () => context.go('/${EstudianteMenuDScreen.screenName}'),
+              onPressed: () =>
+                  context.go('/${EstudianteMenuDScreen.screenName}'),
               icon: const Icon(Icons.exit_to_app_rounded),
             ),
             AppSpaces.horizontal20,
           ],
         ),
-        body: Column(
-          children: [
-            const Expanded(flex: 2, child: CustomImagenPerfil()),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(3),
-                child: Column(
-                  children: [
-                    AppSpaces.vertical20,
-                    AppTexts.title('Estudiante'),
-                    AppSpaces.vertical15,
-                    AppTexts.textNotification(
-                        'Responde Encuestas y Mira Resultados'),
-                    AppSpaces.vertical15,
-                    AppTexts.perfilText('D1002004003'),
-                    AppSpaces.vertical15,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        isEditing
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 200, // Ajusta la altura según lo necesites
+                  child: CustomImagenPerfil(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(3),
+                  child: Column(
+                    children: [
+                      AppSpaces.vertical20,
+                      AppTexts.title('Estudiante'),
+                      AppSpaces.vertical15,
+                      AppTexts.textNotification(
+                          'Responde Encuestas y Mira Resultados'),
+                      AppSpaces.vertical15,
+                      AppTexts.perfilText('D1002004003'),
+                      AppSpaces.vertical15,
+                      Center(
+                        child: isEditing
                             ? SizedBox(
                                 width: 200, // Limita el ancho a 200
                                 child: TextField(
@@ -71,31 +72,31 @@ class _EstudiantePerfilScreenState extends State<EstudiantePerfilScreen> {
                                 ),
                               )
                             : AppTexts.perfilText('*******************'),
-                      ],
-                    ),
-                    AppSpaces.vertical15,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(width: 5),
-                        FloatingActionButton.extended(
-                          onPressed: () {
-                            setState(() {
-                              isEditing = !isEditing;
-                            });
-                          },
-                          elevation: 0,
-                          backgroundColor: Colors.redAccent,
-                          label: Text(isEditing ? "Guardar" : "Editar"),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                  ],
+                      ),
+                      AppSpaces.vertical15,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: 5),
+                          FloatingActionButton.extended(
+                            onPressed: () {
+                              setState(() {
+                                isEditing = !isEditing;
+                              });
+                            },
+                            elevation: 0,
+                            backgroundColor: Colors.redAccent,
+                            label: Text(isEditing ? "Guardar" : "Editar"),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );

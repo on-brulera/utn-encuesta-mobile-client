@@ -40,45 +40,47 @@ class DocenteMenuDScreen extends StatelessWidget {
       body: SafeArea(
         child: FadeIn(
           duration: const Duration(seconds: 2),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppTexts.title('Módulos'),
-                    IconButton.outlined(
-                        onPressed: () =>
-                            context.go('/${LoginScreen.screenName}'),
-                        icon: const Icon(Icons.exit_to_app_rounded))
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppTexts.title('Módulos'),
+                      IconButton.outlined(
+                          onPressed: () =>
+                              context.go('/${LoginScreen.screenName}'),
+                          icon: const Icon(Icons.exit_to_app_rounded))
+                    ],
+                  ),
                 ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    ...opcionesMenuDocente.map((opcion) {
-                      return Padding(
-                        padding: (opcion.titulo == 'Perfil')
-                            ? const EdgeInsets.only(left: 10, right: 10)
-                            : const EdgeInsets.only(left: 10),
-                        child: CustomMenuOpcionCard(opcion: opcion),
-                      );
-                    })
-                  ],
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ...opcionesMenuDocente.map((opcion) {
+                        return Padding(
+                          padding: (opcion.titulo == 'Perfil')
+                              ? const EdgeInsets.only(left: 10, right: 10)
+                              : const EdgeInsets.only(left: 10),
+                          child: CustomMenuOpcionCard(opcion: opcion),
+                        );
+                      })
+                    ],
+                  ),
                 ),
-              ),
-              AppSpaces.vertical20,
-              ...notificaciones.map((notificacion) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: CustomNotificationCard(notificacion: notificacion),
-                );
-              }),
-            ],
+                AppSpaces.vertical20,
+                ...notificaciones.map((notificacion) {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: CustomNotificationCard(notificacion: notificacion),
+                  );
+                }),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,4 +1,7 @@
 
+export 'package:encuestas_utn/presentation/widgets/curso/custom_crear_curso_box.dart';
+
+export 'package:encuestas_utn/presentation/widgets/curso/custom_curso_table.dart';
 export 'package:encuestas_utn/presentation/widgets/encuestas/custom_mirar_encuesta_card.dart';
 export 'package:encuestas_utn/presentation/widgets/chat/custom_ia_message.dart';
 export 'package:encuestas_utn/presentation/widgets/chat/custom_message_field_box.dart';

@@ -30,6 +30,7 @@ environment:
 dependencies:
   animate_do: ^3.3.4
   cupertino_icons: ^1.0.8
+  dynamic_table: ^0.0.1-beta.2
   flutter:
     sdk: flutter
   go_router: ^14.3.0

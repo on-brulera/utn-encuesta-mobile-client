@@ -10,6 +10,11 @@ class AppTexts {
         text,
         style: const TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
       );
+  static softText(String text) => Text(
+        text,
+        style: const TextStyle(
+            fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black54),
+      );
 
   static textNotification(String text) => Text(
         text,
