@@ -10,5 +10,19 @@ class Estilo {
       required this.encuestaId,
       required this.nombre,
       required this.descripcion,
-      required this.parametro});
+      this.parametro = false});
+
+  Estilo copyWith({
+    int? id,
+    int? encuestaId,
+    String? nombre,
+    String? descripcion,
+    bool? parametro,
+  }) =>
+      Estilo(
+          id: id ?? this.id,
+          encuestaId: encuestaId ?? this.encuestaId,
+          nombre: nombre ?? this.nombre,
+          descripcion: descripcion ?? this.descripcion,
+          parametro: parametro?? this.parametro);
 }

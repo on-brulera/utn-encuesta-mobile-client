@@ -1,22 +1,26 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/docente/disenar_encuesta_provider.dart';
 import 'package:encuestas_utn/utils/configuration/const/menu_opcion.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/mensaje.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
 import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class DocenteMenuDScreen extends StatelessWidget {
+class DocenteMenuDScreen extends ConsumerWidget {
   static String screenName = 'menudocentescreen';
   const DocenteMenuDScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     //ITEMS PARA LOS MODULOS
 
-    opcionesMenuDocente[0].callback =
-        () => context.go('/${DocenteDisenarEncuestaScreen.screenName}');
+    opcionesMenuDocente[0].callback = () {
+      ref.read(disenarEncuestaProvider.notifier).limpiarEncuesta();
+      context.go('/${DocenteDisenarEncuestaScreen.screenName}');
+    };
     opcionesMenuDocente[1].callback =
         () => context.go('/${DocenteCursoAsignacionScreen.screenName}');
     opcionesMenuDocente[2].callback =

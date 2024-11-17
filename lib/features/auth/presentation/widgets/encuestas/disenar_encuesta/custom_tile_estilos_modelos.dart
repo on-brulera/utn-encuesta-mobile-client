@@ -1,20 +1,22 @@
+import 'package:encuestas_utn/features/auth/domain/entities/entities.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/disenar_encuesta_provider.dart';
 import 'package:encuestas_utn/utils/app_spaces.dart';
 import 'package:encuestas_utn/utils/app_texts.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CustomTileEstilosParametros extends ConsumerStatefulWidget {
-  const CustomTileEstilosParametros({super.key});
+class CustomTileEstilosModelos extends ConsumerStatefulWidget {
+  const CustomTileEstilosModelos({super.key});
 
   @override
-  createState() => _CustomTileEstilosParametrosState();
+  createState() => _CustomTileEstilosModelosState();
 }
 
-class _CustomTileEstilosParametrosState
-    extends ConsumerState<CustomTileEstilosParametros> {
+class _CustomTileEstilosModelosState
+    extends ConsumerState<CustomTileEstilosModelos> {
   final TextEditingController _controllerEstilo = TextEditingController();
-  final TextEditingController _controllerParametro = TextEditingController();
+  String? _selectedModel;
+  String _modelDescription = '';
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +24,46 @@ class _CustomTileEstilosParametrosState
     final disenarEncuestaNotifier = ref.read(disenarEncuestaProvider.notifier);
 
     return ExpansionTile(
-      title: const Text('Estilos y Parámetros'),
+      title: const Text('Modelos y Estilos'),
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Dropdown para seleccionar el modelo
+            SizedBox(
+              width: double.infinity,
+              child: DropdownButton<String>(
+                value: _selectedModel,
+                hint: const Text('Selecciona un modelo'),
+                isExpanded: true,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedModel = value;
+                    _modelDescription = modelos[value] ?? '';
+                    disenarEncuestaNotifier.setModeloSeleccionado(value!);
+                  });
+                },
+                items: modelos.keys.map((modelo) {
+                  return DropdownMenuItem(
+                    value: modelo,
+                    child: Text(modelo),
+                  );
+                }).toList(),
+              ),
+            ),
+
+            const SizedBox(height: 8),
+            AppTexts.softText(_modelDescription),
+            const SizedBox(height: 25),
+
+            // Editable section para estilos
             _buildEditableSection(
               'Estilos de Aprendizaje',
               'Nombre del estilo',
               _controllerEstilo,
-              disenarEncuestaState.estilos,
-              disenarEncuestaNotifier.agregarEstilo,
-              disenarEncuestaNotifier.eliminarEstilo,
-              Colors.redAccent,
-            ),
-            const SizedBox(height: 16),
-            _buildEditableSection(
-              'Parámetros',
-              'Nombre del parámetro',
-              _controllerParametro,
-              disenarEncuestaState.parametros,
-              disenarEncuestaNotifier.agregarParametro,
-              disenarEncuestaNotifier.eliminarParametro,
+              disenarEncuestaState.estilosEncuesta ?? [],
+              (nombre) => disenarEncuestaNotifier.agregarEstilo(nombre),
+              (nombre) => disenarEncuestaNotifier.eliminarEstilo(nombre),
               Colors.redAccent,
             ),
           ],
@@ -52,11 +72,17 @@ class _CustomTileEstilosParametrosState
     );
   }
 
+  final Map<String, String> modelos = {
+    'Modelo 1': 'Felder y Silverman',
+    'Modelo 2': 'Gardner',
+    'Modelo 3': 'Bandler & Grinder',
+  };
+
   Widget _buildEditableSection(
     String label,
     String hint,
     TextEditingController controller,
-    List<String> items,
+    List<Estilo> estilos,
     Function(String) onAdd,
     Function(String) onDelete,
     Color color,
@@ -64,7 +90,7 @@ class _CustomTileEstilosParametrosState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppTexts.softText(label),
+        AppTexts.subTitle(label),
         AppSpaces.vertical15,
         Row(
           children: [
@@ -105,7 +131,7 @@ class _CustomTileEstilosParametrosState
         ),
         const SizedBox(height: 16),
         Column(
-          children: items.map((item) {
+          children: estilos.map((estilo) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Row(
@@ -113,7 +139,7 @@ class _CustomTileEstilosParametrosState
                   Expanded(
                     child: TextField(
                       enabled: false,
-                      controller: TextEditingController(text: item),
+                      controller: TextEditingController(text: estilo.nombre),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFF0F0F0),
@@ -127,7 +153,7 @@ class _CustomTileEstilosParametrosState
                   ),
                   const SizedBox(width: 8),
                   IconButton(
-                    onPressed: () => onDelete(item),
+                    onPressed: () => onDelete(estilo.nombre),
                     icon: Icon(Icons.delete, color: color),
                   ),
                 ],

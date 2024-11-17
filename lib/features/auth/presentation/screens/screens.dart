@@ -15,6 +15,7 @@ export 'package:encuestas_utn/features/auth/presentation/screens/docente/estadis
 export 'package:encuestas_utn/features/auth/presentation/screens/docente/home/docente_menu_screen.dart';
 export 'package:encuestas_utn/features/auth/presentation/screens/docente/perfil/docente_perfil_screen.dart';
 export 'package:encuestas_utn/features/auth/presentation/screens/docente/disenar_encuesta/docente_lista_encuesta_screen.dart';
+export 'package:encuestas_utn/features/auth/presentation/screens/docente/disenar_encuesta/docente_encuesta_detalles_screen.dart';
 
 //PARA DOCENTES Y ESTUDIANTES
 export 'package:encuestas_utn/features/auth/presentation/screens/login/login_screen.dart';

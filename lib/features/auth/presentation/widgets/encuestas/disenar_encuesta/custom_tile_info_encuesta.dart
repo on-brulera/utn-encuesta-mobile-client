@@ -19,15 +19,12 @@ class _CustomTileInfoEncuestaState
   @override
   void initState() {
     super.initState();
-    final encuestaState = ref.read(disenarEncuestaProvider);
 
-    // Inicializamos los controladores con los valores del estado si existen, o con un string vacío si no.
-    _tituloController = TextEditingController(text: encuestaState.titulo ?? '');
-    _autorController = TextEditingController(text: encuestaState.autor ?? '');
-    _descripcionController =
-        TextEditingController(text: encuestaState.descripcion ?? '');
-    _valorPreguntaController =
-        TextEditingController(text: encuestaState.valorPregunta ?? '');
+    // Inicializa los controladores con valores iniciales
+    _tituloController = TextEditingController();
+    _autorController = TextEditingController();
+    _descripcionController = TextEditingController();
+    _valorPreguntaController = TextEditingController();
   }
 
   @override
@@ -43,6 +40,14 @@ class _CustomTileInfoEncuestaState
   Widget build(BuildContext context) {
     final disenarEncuestaNotifier = ref.read(disenarEncuestaProvider.notifier);
     final disenarEncuestaState = ref.watch(disenarEncuestaProvider);
+
+    // Actualiza los controladores cuando cambia el estado
+    _updateController(_tituloController, disenarEncuestaState.encuesta?.titulo);
+    _updateController(_autorController, disenarEncuestaState.encuesta?.autor);
+    _updateController(
+        _descripcionController, disenarEncuestaState.encuesta?.descripcion);
+    _updateController(
+        _valorPreguntaController, disenarEncuestaState.valorPregunta);
 
     return ExpansionTile(
       title: const Text('Info Encuesta'),
@@ -69,7 +74,7 @@ class _CustomTileInfoEncuestaState
               hintText: 'Descripción del test',
               onChanged: disenarEncuestaNotifier.setDescripcion,
             ),
-            if (disenarEncuestaState.tipoEncuesta == 'cuantitativo')
+            if (disenarEncuestaState.encuesta?.cuantitativa == true)
               _buildTextField(
                 label: 'Valor de la pregunta',
                 controller: _valorPreguntaController,
@@ -80,6 +85,12 @@ class _CustomTileInfoEncuestaState
         ),
       ],
     );
+  }
+
+  void _updateController(TextEditingController controller, String? value) {
+    if (controller.text != (value ?? '')) {
+      controller.text = value ?? '';
+    }
   }
 
   Widget _buildTextField({
@@ -115,6 +126,8 @@ class _CustomTileInfoEncuestaState
 
   Widget _buildRadioOptions(
       DisenarEncuestaState state, DisenarEncuestaNotifier notifier) {
+    final opcionTipoEncuestaSeleccionada =
+        state.encuesta?.cuantitativa == true ? 'cuantitativo' : 'cualitativo';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -132,7 +145,7 @@ class _CustomTileInfoEncuestaState
                 title: const Text('Cualitativo',
                     style: TextStyle(color: Colors.black)),
                 value: 'cualitativo',
-                groupValue: state.tipoEncuesta,
+                groupValue: opcionTipoEncuestaSeleccionada,
                 onChanged: (value) =>
                     notifier.setTipoEncuesta(value ?? 'cualitativo'),
                 activeColor: Colors.red,
@@ -141,7 +154,7 @@ class _CustomTileInfoEncuestaState
                 title: const Text('Cuantitativo',
                     style: TextStyle(color: Colors.black)),
                 value: 'cuantitativo',
-                groupValue: state.tipoEncuesta,
+                groupValue: opcionTipoEncuestaSeleccionada,
                 onChanged: (value) =>
                     notifier.setTipoEncuesta(value ?? 'cuantitativo'),
                 activeColor: Colors.red,

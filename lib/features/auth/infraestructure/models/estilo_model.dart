@@ -9,10 +9,10 @@ class EstiloModel extends Estilo {
       required super.parametro});
 
   factory EstiloModel.fromJson(Map<String, dynamic> json) => EstiloModel(
-      id: json['est_id'],
-      encuestaId: json['enc_id'],
+      id: int.tryParse(json['est_id'].toString()) ?? 0,
+      encuestaId: int.tryParse(json['enc_id'].toString()) ?? 0,
       nombre: json['est_nombre'],
-      descripcion: json['est_descripcion'],
+      descripcion: json['est_descripcion'] ?? '',
       parametro: json['est_parametro']);
 
   Map<String, dynamic> toJson() {

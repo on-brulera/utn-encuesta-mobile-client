@@ -20,4 +20,21 @@ class Encuesta {
     this.cuantitativa = false,
     required this.fechaCreacion,
   });
+
+  Encuesta copyWith({
+    int? id,
+    String? titulo,
+    String? descripcion,
+    String? autor,
+    bool? cuantitativa,
+    DateTime? fechaCreacion,
+  }) {
+    return Encuesta(
+      id: id?? this.id,
+      titulo: titulo?? this.titulo,
+      autor: autor?? this.autor,
+      descripcion: descripcion?? this.descripcion,
+      cuantitativa: cuantitativa?? this.cuantitativa,
+      fechaCreacion: fechaCreacion?? this.fechaCreacion);
+  }
 }

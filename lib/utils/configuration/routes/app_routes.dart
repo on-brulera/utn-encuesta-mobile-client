@@ -1,7 +1,7 @@
 import 'package:encuestas_utn/features/auth/domain/entities/mensaje.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:flutter/material.dart';
 // GoRouter configuration
 final appRoutes = GoRouter(
   initialLocation: '/${LoginScreen.screenName}',
@@ -44,6 +44,23 @@ final appRoutes = GoRouter(
       path: '/${DocenteListaEncuestaScreen.screenName}',
       builder: (context, state) => const DocenteListaEncuestaScreen(),
     ),
+    GoRoute(
+      path: '/${DocenteEncuestaDetallesScreen.screenName}/:idEncuesta',
+      name: DocenteEncuestaDetallesScreen.screenName, // Define un nombre único
+      builder: (context, state) {
+        final idEncuesta =
+            int.tryParse(state.pathParameters['idEncuesta'] ?? '');
+        if (idEncuesta == null) {
+          return const Scaffold(
+            body: Center(
+              child: Text('ID de encuesta no válido'),
+            ),
+          );
+        }
+        return DocenteEncuestaDetallesScreen(idEncuesta: idEncuesta);
+      },
+    ),
+
 
     //RUTAS PARA EL ESTUDIANTE
     GoRoute(

@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:encuestas_utn/features/auth/domain/entities/encuesta.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
 import 'package:encuestas_utn/utils/utils.dart';
@@ -8,9 +9,11 @@ import 'package:go_router/go_router.dart';
 class EstudianteEncuestasResponder extends StatelessWidget {
   static String screenName = 'estudiante_encuesta_responder_screen';
   const EstudianteEncuestasResponder({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
+    final List<Encuesta> encuestas = [];
     return FadeIn(
       duration: const Duration(milliseconds: 1300),
       child: Scaffold(
