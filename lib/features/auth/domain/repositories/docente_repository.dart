@@ -10,11 +10,17 @@ abstract class DocenteRepository {
 
   Future<Opcion?> crearOpcion(Opcion opcion, String token);
 
-  Future<bool?> eliminarEncuesta(int idEncuesta ,String token);
+  Future<bool?> eliminarEncuesta(int idEncuesta, String token);
+
+  //PARA LA CREACIÓN DE CURSOS
+
+  Future<Curso?> crearCurso(Curso curso, String token);
 
   //PARA OBTENER LISTAS DE DATOS
 
   Future<List<Encuesta>?> obtenerAllEncuestas(String token);
+
+  Future<List<Curso>?> obtenerAllCurso(String token);
 
   Future<EncuestaDetalles?> obtenerEncuestaDellates(
       String token, int encuestaId);

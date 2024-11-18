@@ -10,6 +10,8 @@ class UserModel extends User {
     required super.password,
     required super.rol,
     required this.token,
+    required super.cedula,
+    required super.cursoId,
   });
 
   // Convierte el JSON de la API a UserModel
@@ -20,6 +22,8 @@ class UserModel extends User {
       password: json['usu_password'],
       rol: json['rol_codigo'],
       token: json['token'],
+      cedula: json['per_cedula'],
+      cursoId: json['cur_id'],
     );
   }
 }

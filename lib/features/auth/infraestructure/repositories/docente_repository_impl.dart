@@ -8,6 +8,10 @@ class DocenteRepositoryImpl implements DocenteRepository {
   @override
   Future<Encuesta?> crearEncuesta(Encuesta encuesta, String token) async {
     try {
+      if (encuesta.id != 0) {
+        await estilosAPI.delete('/encuesta/delete/all/${encuesta.id}',
+            options: addToken(token));
+      }
       final response = await estilosAPI.post('/encuesta',
           data: EncuestaModel.toModel(encuesta).toJson(),
           options: addToken(token));
@@ -123,13 +127,49 @@ class DocenteRepositoryImpl implements DocenteRepository {
   }
 
   @override
-  Future<bool?> eliminarEncuesta(int idEncuesta, String token) async{
+  Future<bool?> eliminarEncuesta(int idEncuesta, String token) async {
     try {
       final response = await estilosAPI.delete(
         '/encuesta/delete/all/$idEncuesta',
         options: addToken(token),
       );
       return response.statusCode == 204;
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  @override
+  Future<Curso?> crearCurso(Curso curso, String token) async {
+    try {
+      final response = await estilosAPI.post('/curso',
+          data: CursoModel.toModel(curso).toJson(), options: addToken(token));
+      if (response.statusCode == 201) {
+        return CursoModel.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  @override
+  Future<List<Curso>?> obtenerAllCurso(String token) async {
+    try {
+      final response = await estilosAPI.get(
+        '/curso',
+        options: addToken(token),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> cursosJson = response.data['data'];
+        final cursos =
+            cursosJson.map((json) => CursoModel.fromJson(json)).toList();
+
+        return cursos;
+      } else {
+        return null;
+      }
     } catch (e) {
       return null;
     }

@@ -24,17 +24,19 @@ class SessionNotifier extends StateNotifier<SessionState> {
 
   Future<void> login(String usuario, String password) async {
     try {
-      // Utiliza el repositorio para manejar la lógica de autenticación
       final user = await authRepository.login(usuario, password);
       if (user != null) {
-        // Actualiza el estado con el usuario autenticado y su token
         state = state.copyWith(user: user, token: user.token);
       } else {
         state = state.copyWith(
             user: User(
-                id: 'id', usuario: 'usuario', password: 'password', rol: 'DOC'),
+                id: 'id',
+                usuario: 'usuario',
+                password: 'password',
+                rol: 'DOC',
+                cedula: '1002003004',
+                cursoId: 1),
             token: 'jajaja');
-        // print("Error: Usuario o contraseña incorrectos");
       }
     } catch (e) {
       // print("Error en la autenticación: $e");
@@ -42,7 +44,6 @@ class SessionNotifier extends StateNotifier<SessionState> {
   }
 
   void logout() {
-    // Limpiar el estado de la sesión
     state = SessionState();
   }
 }

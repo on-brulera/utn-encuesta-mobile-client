@@ -15,7 +15,7 @@ class EncuestaModel extends Encuesta {
       descripcion: json['enc_descripcion'],
       autor: json['enc_autor'],
       cuantitativa: json['enc_cuantitativa'],
-      fechaCreacion: DateTime.parse(json['enc_fecha_creacion']));
+      fechaCreacion: DateTime.parse(json['enc_fecha_creacion']));  
 
   Map<String, dynamic> toJson() {
     return {

@@ -62,14 +62,15 @@ class DocenteDisenarEncuestaScreen extends ConsumerWidget {
           if (encuestaCreada) {
             messenger.showSnackBar(
               const SnackBar(
-                content: Text('Encuesta Creada'),
+                content: Text('Encuesta Guardada'),
                 backgroundColor: Colors.green,
               ),
             );
           } else {
             messenger.showSnackBar(
               const SnackBar(
-                content: Text('Error al crear la encuesta'),
+                content: Text(
+                    'Error al guardar la encuesta, llene todos los campos'),
                 backgroundColor: Colors.red,
               ),
             );
