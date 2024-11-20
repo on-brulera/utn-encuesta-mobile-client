@@ -10,6 +10,6 @@ class PersonaModel extends Persona {
     return {'per_cedula': cedula, 'per_nombres': nombres};
   }
 
-  PersonaModel toModel(Persona persona) =>
+  static PersonaModel toModel(Persona persona) =>
       PersonaModel(cedula: persona.cedula, nombres: persona.nombres);
 }

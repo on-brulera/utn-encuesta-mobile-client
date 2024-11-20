@@ -1,6 +1,7 @@
 import 'package:encuestas_utn/features/auth/domain/entities/entities.dart';
 import 'package:encuestas_utn/features/auth/domain/repositories/docente_repository.dart';
 import 'package:encuestas_utn/features/auth/infraestructure/models/models.dart';
+import 'package:encuestas_utn/features/auth/infraestructure/models/nota_model.dart';
 import 'package:encuestas_utn/utils/configuration/connection/conn.dart';
 
 class DocenteRepositoryImpl implements DocenteRepository {
@@ -138,7 +139,7 @@ class DocenteRepositoryImpl implements DocenteRepository {
       return null;
     }
   }
-  
+
   @override
   Future<Curso?> crearCurso(Curso curso, String token) async {
     try {
@@ -153,7 +154,7 @@ class DocenteRepositoryImpl implements DocenteRepository {
       return null;
     }
   }
-  
+
   @override
   Future<List<Curso>?> obtenerAllCurso(String token) async {
     try {
@@ -170,6 +171,168 @@ class DocenteRepositoryImpl implements DocenteRepository {
       } else {
         return null;
       }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<List<Materia>?> obtenerAllMateria(String token) async {
+    try {
+      final response = await estilosAPI.get(
+        '/materia',
+        options: addToken(token),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> cursosJson = response.data['data'];
+        final materias =
+            cursosJson.map((json) => MateriaModel.fromJson(json)).toList();
+
+        return materias;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<List<Parcial>?> obtenerAllParcial(String token) async {
+    try {
+      final response = await estilosAPI.get(
+        '/parcial',
+        options: addToken(token),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> parcialesJson = response.data['data'];
+        final parciales =
+            parcialesJson.map((json) => ParcialModel.fromJson(json)).toList();
+
+        return parciales;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<Persona?> crearPersona(Persona persona, String token) async {
+    try {
+      final response = await estilosAPI.post('/persona',
+          data: PersonaModel.toModel(persona).toJson(),
+          options: addToken(token));
+      if (response.statusCode == 201) {
+        return PersonaModel.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<User?> obtenerUsuarioByCedula(String cedula, String token) async {
+    try {
+      final response = await estilosAPI.get(
+        '/usuario/cedula/$cedula',
+        options: addToken(token),
+      );
+      if (response.statusCode == 200) {
+        return UserModel.fromJson(response.data['data']);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<User?> crearEstudiante(User usuario, String token) async {
+    try {
+      final response = await estilosAPI.post('/usuario',
+          data: UserModel.toModel(usuario).toJsonEstudiante(),
+          options: addToken(token));
+      if (response.statusCode == 201) {
+        return UserModel.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<Asignacion?> crearAsignacion(
+      Asignacion asignacion, String token) async {
+    try {
+      final response = await estilosAPI.post('/asignacion',
+          data: AsignacionModel.toModel(asignacion).toJson(),
+          options: addToken(token));
+      if (response.statusCode == 201) {
+        return AsignacionModel.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<Nota?> crearActualizarNota(Nota nota, String token) async {
+    try {
+      final response = await estilosAPI.post('/nota',
+          data: NotaModel.toModel(nota).toJson(), options: addToken(token));
+      if (response.statusCode == 201) {
+        return NotaModel.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<List<AsignacionDetalles>?> obtenerAsignacionesByDocenteId(
+      int docenteId, String token) async {
+    try {
+      final response = await estilosAPI.get(
+        '/asignacion/usuario/docente/$docenteId',
+        options: addToken(token),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> parcialesJson = response.data['data'];
+        final asignaciones = parcialesJson
+            .map((json) => AsignacionDetallesModel.fromJson(json))
+            .toList();
+
+        return asignaciones;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<Asignacion?> obtenerAsignacionByEncuestaId(
+      int encuestaId, String token) async {
+    try {
+      final response = await estilosAPI.get(
+        '/asignacion/encuesta/$encuestaId',
+        options: addToken(token),
+      );
+      if (response.statusCode == 200) {
+        return AsignacionModel.fromJson(response.data['data']);
+      }
+      return null;
     } catch (e) {
       return null;
     }

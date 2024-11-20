@@ -20,4 +20,19 @@ class AuthRepositoryImpl implements AuthRepository {
       return null;
     }
   }
+
+  @override
+  Future<User?> cambiarPassword(User user, String token) async {
+    try {
+      final response = await estilosAPI.put('/usuario/${user.id}',
+          options: addToken(token), data: UserModel.toModel(user).toJson());
+      if (response.statusCode == 200) {
+        return UserModel.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

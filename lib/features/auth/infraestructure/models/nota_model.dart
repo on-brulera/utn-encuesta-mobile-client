@@ -15,7 +15,7 @@ class NotaModel extends Nota {
       cursoId: int.tryParse(json['cur_id'].toString()) ?? 0,
       materiaId: int.tryParse(json['mat_id'].toString()) ?? 0,
       parcialId: int.tryParse(json['par_id'].toString()) ?? 0,
-      nota: json['not_nota']);
+      nota: json['not_nota'] ?? 0);
 
   Map<String, dynamic> toJson() {
     return {
@@ -27,7 +27,7 @@ class NotaModel extends Nota {
     };
   }
 
-  NotaModel toModel(Nota nota) => NotaModel(
+  static NotaModel toModel(Nota nota) => NotaModel(
       id: nota.id,
       usuarioId: nota.usuarioId,
       cursoId: nota.cursoId,

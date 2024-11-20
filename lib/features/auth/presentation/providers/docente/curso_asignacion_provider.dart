@@ -37,7 +37,7 @@ class CursoDetalleNotifier extends StateNotifier<CursoDetalleState> {
         return true;
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
     return false;
   }
@@ -76,4 +76,3 @@ final cursoDetalleProvider =
     token: session.token,
   );
 });
-

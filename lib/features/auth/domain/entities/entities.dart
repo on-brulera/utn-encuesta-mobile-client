@@ -1,4 +1,13 @@
 
+export 'package:encuestas_utn/features/auth/domain/entities/asignacion_detalles.dart';
+
+export 'package:encuestas_utn/features/auth/domain/entities/rol.dart';
+export 'package:encuestas_utn/features/auth/domain/entities/respuesta.dart';
+export 'package:encuestas_utn/features/auth/domain/entities/prompt.dart';
+export 'package:encuestas_utn/features/auth/domain/entities/historial.dart';
+export 'package:encuestas_utn/features/auth/domain/entities/credenciales_api.dart';
+export 'package:encuestas_utn/features/auth/domain/entities/reglas_calculo.dart';
+export 'package:encuestas_utn/features/auth/domain/entities/parcial.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/estudiante.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/nota.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/asignacion.dart';

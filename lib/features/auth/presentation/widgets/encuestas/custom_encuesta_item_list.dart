@@ -35,11 +35,26 @@ class CustomEncuestaItemList extends ConsumerWidget {
 
   void _navigateToDisenarEncuesta(
       BuildContext context, WidgetRef ref, int encuestaId) async {
-    // Invoca la función cargarDatosEncuesta antes de navegar
-    ref.read(disenarEncuestaProvider.notifier).cargarDatosEncuesta(encuestaId);
+    //verificar que la encuesta no haya sido asignada
+    final messenger = ScaffoldMessenger.of(context);
+    final listaEncuestaNotifier = ref.read(listaEncuestaProvider.notifier);
+    final bool? isAssigned =
+        await listaEncuestaNotifier.verificarEncuestaAsignada(encuestaId);
+    if (isAssigned == true) {
+      messenger.showSnackBar(
+        const SnackBar(
+            content: Text('No se puede editar porque ya ha sido asignado')),
+      );
+      return;
+    }
 
     // Realiza la navegación
-    context.go('/${DocenteDisenarEncuestaScreen.screenName}');
+    if (context.mounted) {
+      ref
+          .read(disenarEncuestaProvider.notifier)
+          .cargarDatosEncuesta(encuestaId);
+      context.go('/${DocenteDisenarEncuestaScreen.screenName}');
+    }
   }
 
   Widget _buildItemContainer(BuildContext context, WidgetRef ref) {
@@ -174,7 +189,7 @@ class CustomEncuestaItemList extends ConsumerWidget {
       if (context.mounted) {
         _showSnackBar(
           context,
-          'Error al eliminar la encuesta',
+          'No se puede eliminar la encuesta, ya fue asignada',
           Colors.red,
         );
       }

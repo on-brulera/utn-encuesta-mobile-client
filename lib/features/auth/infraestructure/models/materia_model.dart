@@ -6,7 +6,7 @@ class MateriaModel extends Materia {
 
   factory MateriaModel.fromJson(Map<String, dynamic> json) => MateriaModel(
       id: int.tryParse(json['mat_id'].toString()) ?? 0,
-      nombre: json['map_nombre'],
+      nombre: json['mat_nombre'],
       descripcion: json['mat_descripcion'] ?? 'Sin descripción');
 
   Map<String, dynamic> toJson() {

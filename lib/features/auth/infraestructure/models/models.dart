@@ -1,5 +1,13 @@
-export 'package:encuestas_utn/features/auth/infraestructure/models/asignacion_model.dart';
 
+export  'package:encuestas_utn/features/auth/infraestructure/models/asignacion_detalles_model.dart';
+
+export 'package:encuestas_utn/features/auth/infraestructure/models/respuesta_model.dart';
+export 'package:encuestas_utn/features/auth/infraestructure/models/prompt_model.dart';
+export 'package:encuestas_utn/features/auth/infraestructure/models/historial_model.dart';
+export 'package:encuestas_utn/features/auth/infraestructure/models/credenciales_api_model.dart';
+export 'package:encuestas_utn/features/auth/infraestructure/models/reglas_calculo_model.dart';
+export 'package:encuestas_utn/features/auth/infraestructure/models/parcial_model.dart';
+export 'package:encuestas_utn/features/auth/infraestructure/models/asignacion_model.dart';
 export 'package:encuestas_utn/features/auth/infraestructure/models/persona_model.dart';
 export 'package:encuestas_utn/features/auth/infraestructure/models/materia_model.dart';
 export 'package:encuestas_utn/features/auth/infraestructure/models/curso_model.dart';

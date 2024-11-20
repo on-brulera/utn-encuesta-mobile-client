@@ -1,3 +1,4 @@
+import 'package:encuestas_utn/features/auth/domain/entities/asignacion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/encuesta.dart';
 import 'package:encuestas_utn/features/auth/infraestructure/repositories/docente_repository_impl.dart';
@@ -55,9 +56,20 @@ class ListaEncuestaNotifier extends StateNotifier<ListaEncuestaState> {
   }
 
   Future<bool?> borrarEncuestaDetallesConId(int idEncuesta) async {
-    final bool? codigoStatus =
+    final bool? encuestaAsignada = await verificarEncuestaAsignada(idEncuesta);
+    if (encuestaAsignada != false) {
+      return false;
+    }
+    final bool? eliminado =
         await docenteRepository.eliminarEncuesta(idEncuesta, token);
-    return codigoStatus;
+    return eliminado;
+  }
+
+  Future<bool?> verificarEncuestaAsignada(int idEncuesta) async {
+    final Asignacion? encuestaAsignada = await docenteRepository
+        .obtenerAsignacionByEncuestaId(idEncuesta, token);
+
+    return encuestaAsignada != null;
   }
 }
 

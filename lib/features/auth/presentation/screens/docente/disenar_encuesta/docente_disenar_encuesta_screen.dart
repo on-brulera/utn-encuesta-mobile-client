@@ -1,4 +1,5 @@
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/disenar_encuesta_provider.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_encuesta_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/encuestas/disenar_encuesta/custom_regla_calculo_section.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/encuestas/disenar_encuesta/custom_tile_estilos_modelos.dart';
@@ -16,6 +17,7 @@ class DocenteDisenarEncuestaScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final disenarEncuestaNotifier = ref.read(disenarEncuestaProvider.notifier);
+    final listaEncuestaNotifier = ref.read(listaEncuestaProvider.notifier);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -58,6 +60,7 @@ class DocenteDisenarEncuestaScreen extends ConsumerWidget {
           final messenger = ScaffoldMessenger.of(
               context); // Captura el messenger antes del async gap
           final encuestaCreada = await disenarEncuestaNotifier.crearEncuesta();
+          await listaEncuestaNotifier.obtenerTodasLasEncuestas();
 
           if (encuestaCreada) {
             messenger.showSnackBar(

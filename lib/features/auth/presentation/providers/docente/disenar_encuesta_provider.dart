@@ -86,7 +86,7 @@ class DisenarEncuestaNotifier extends StateNotifier<DisenarEncuestaState> {
     // Paso 2: Eliminar las opciones con el estilo eliminado
     final preguntasActualizadas = state.preguntas.map((pregunta) {
       final opcionesFiltradas = pregunta.opciones
-          .where((opcion) => opcion.valorCualitativo != estiloNombre)
+          .where((opcion) => opcion.nombreEstilo != estiloNombre)
           .toList();
       return pregunta.copyWith(opciones: opcionesFiltradas);
     }).toList();

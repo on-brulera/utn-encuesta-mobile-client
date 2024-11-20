@@ -9,7 +9,8 @@ class AsignacionModel extends Asignacion {
       required super.materiaId,
       required super.descripcion,
       required super.fechaCompletado,
-      required super.realizado});
+      required super.realizado,
+      required super.usuIdAsignador});
 
   factory AsignacionModel.fromJson(Map<String, dynamic> json) =>
       AsignacionModel(
@@ -20,7 +21,8 @@ class AsignacionModel extends Asignacion {
           materiaId: int.tryParse(json['mat_id'].toString()) ?? 0,
           descripcion: json['asi_descripcion'] ?? 'Sin descripcion',
           fechaCompletado: DateTime.parse(json['asi_fecha_completado']),
-          realizado: json['asi_realizado'] ?? false);
+          realizado: json['asi_realizado'] ?? false,
+          usuIdAsignador: json['usu_id_asignador']);
 
   Map<String, dynamic> toJson() {
     return {
@@ -29,18 +31,20 @@ class AsignacionModel extends Asignacion {
       'cur_id': cursoId,
       'mat_id': materiaId,
       'asi_descripcion': descripcion,
-      'asi_fecha_completado': fechaCompletado,
-      'asi_realizado': realizado
+      'asi_fecha_completado': fechaCompletado.toIso8601String(),
+      'asi_realizado': realizado,
+      'usu_id_asignador': usuIdAsignador
     };
   }
 
-  AsignacionModel toModel(Asignacion asignacion) => AsignacionModel(
-      id: id,
+  static AsignacionModel toModel(Asignacion asignacion) => AsignacionModel(
+      id: asignacion.id,
       encuestaId: asignacion.encuestaId,
       usuarioId: asignacion.usuarioId,
       cursoId: asignacion.cursoId,
       materiaId: asignacion.materiaId,
       descripcion: asignacion.descripcion,
       fechaCompletado: asignacion.fechaCompletado,
-      realizado: asignacion.realizado);
+      realizado: asignacion.realizado,
+      usuIdAsignador: asignacion.usuIdAsignador);
 }
