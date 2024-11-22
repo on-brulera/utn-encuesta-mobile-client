@@ -82,7 +82,8 @@ class CrearAsignacionNotifier extends StateNotifier<CrearAsignacionState> {
                 descripcion: 'Responde rápidamente la encuesta',
                 fechaCompletado: DateTime.now(),
                 realizado: false,
-                usuIdAsignador: idUsuarioDocente),
+                usuIdAsignador: idUsuarioDocente,
+                parcialSeleccionado: parcialId),
             token);
       }
 
@@ -96,7 +97,8 @@ class CrearAsignacionNotifier extends StateNotifier<CrearAsignacionState> {
               descripcion: '',
               fechaCompletado: DateTime.now(),
               realizado: false,
-              usuIdAsignador: 0));
+              usuIdAsignador: 0,
+              parcialSeleccionado: 0));
     } catch (e) {
       state = state.copyWith(
         isLoading: false,

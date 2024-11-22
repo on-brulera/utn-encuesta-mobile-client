@@ -11,7 +11,7 @@ class DocenteListaEncuestaScreen extends ConsumerWidget {
   const DocenteListaEncuestaScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {    
+  Widget build(BuildContext context, WidgetRef ref) {
     final listaEncuestaState = ref.watch(listaEncuestaProvider);
     final listaEncuestaNotifier = ref.read(listaEncuestaProvider.notifier);
 
@@ -26,16 +26,7 @@ class DocenteListaEncuestaScreen extends ConsumerWidget {
     return FadeIn(
       duration: const Duration(milliseconds: 1300),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Encuestas'),
-          actions: [
-            IconButton.outlined(
-              onPressed: () => context.go('/${DocenteMenuDScreen.screenName}'),
-              icon: const Icon(Icons.exit_to_app_rounded),
-            ),
-            const SizedBox(width: 20),
-          ],
-        ),
+        appBar: const CurstomAppBar(titulo: 'Encuestas'),
         body: SafeArea(
           child: listaEncuestaState.isLoading
               ? const Center(child: CircularProgressIndicator())
@@ -50,7 +41,7 @@ class DocenteListaEncuestaScreen extends ConsumerWidget {
                       onRefresh: () async {
                         // Llamar al método para volver a cargar las encuestas
                         await listaEncuestaNotifier.obtenerTodasLasEncuestas();
-                         if (context.mounted) {
+                        if (context.mounted) {
                           // Mostrar el SnackBar solo si el contexto aún es válido
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

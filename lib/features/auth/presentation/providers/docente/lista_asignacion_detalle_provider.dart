@@ -4,26 +4,48 @@ import 'package:encuestas_utn/features/auth/infraestructure/repositories/docente
 import 'package:encuestas_utn/features/auth/presentation/providers/shared/session_provider.dart';
 
 class ListaAsignacionDetalleState {
-  final List<AsignacionDetalles> asignaciones;
+  final List<AsignacionDetalles>? asignaciones;
   final bool isLoading;
   final String? error;
+  //PARA OBTENER LOS CURSOS SIN REPETICION
+  final List<AsignacionDetalles>? cursosAsignaciones;
+  //PARA OBTENER LOS DETALLES DEL CURSO SIN REPETICION
+  final AsignacionDetalles? cursoAsignacionSelected;
+  final List<AsignacionDetalles>? encuestasCursoAsignacionSelected;
+  final bool hasLoaded;
+  //PARA LA LISTA DE ESTUDIANTES
+  final List<Estudiante>? estudiantes;
 
-  ListaAsignacionDetalleState({
-    this.asignaciones = const [],
-    this.isLoading = false,
-    this.error,
-  });
+  ListaAsignacionDetalleState(
+      {this.asignaciones = const [],
+      this.isLoading = false,
+      this.error,
+      this.cursosAsignaciones = const [],
+      this.cursoAsignacionSelected,
+      this.encuestasCursoAsignacionSelected,
+      this.hasLoaded = false,
+      this.estudiantes});
 
-  ListaAsignacionDetalleState copyWith({
-    List<AsignacionDetalles>? asignaciones,
-    bool? isLoading,
-    String? error,
-  }) {
+  ListaAsignacionDetalleState copyWith(
+      {List<AsignacionDetalles>? asignaciones,
+      bool? isLoading,
+      String? error,
+      List<AsignacionDetalles>? cursosAsignaciones,
+      AsignacionDetalles? cursoAsignacionSelected,
+      List<AsignacionDetalles>? encuestasCursoAsignacionSelected,
+      bool? hasLoaded,
+      List<Estudiante>? estudiantes}) {
     return ListaAsignacionDetalleState(
-      asignaciones: asignaciones ?? this.asignaciones,
-      isLoading: isLoading ?? this.isLoading,
-      error: error,
-    );
+        asignaciones: asignaciones ?? this.asignaciones,
+        isLoading: isLoading ?? this.isLoading,
+        error: error,
+        cursosAsignaciones: cursosAsignaciones ?? this.cursosAsignaciones,
+        cursoAsignacionSelected:
+            cursoAsignacionSelected ?? this.cursoAsignacionSelected,
+        encuestasCursoAsignacionSelected: encuestasCursoAsignacionSelected ??
+            this.encuestasCursoAsignacionSelected,
+        hasLoaded: hasLoaded ?? this.hasLoaded,
+        estudiantes: estudiantes ?? this.estudiantes);
   }
 }
 
@@ -46,17 +68,58 @@ class ListaAsignacionDetalleNotifier
           await docenteRepository.obtenerAsignacionesByDocenteId(userId, token);
 
       if (asignaciones != null) {
-        state = state.copyWith(asignaciones: asignaciones, isLoading: false);
+        state = state.copyWith(
+            asignaciones: asignaciones, isLoading: false, hasLoaded: true);
+        filtrarAsignacionesPorCurso();
       } else {
         state = state.copyWith(
             isLoading: false,
+            hasLoaded: true,
             error: 'No se pudieron obtener las asignaciones.');
       }
     } catch (e) {
       state = state.copyWith(
           isLoading: false,
+          hasLoaded: true,
           error: 'Error al obtener las asignaciones: ${e.toString()}');
     }
+  }
+
+  void filtrarAsignacionesPorCurso() {
+    final Set<int> idsUnicos = {};
+    final List<AsignacionDetalles> cursosAsignaciones = [];
+
+    for (final asignacion in state.asignaciones!) {
+      if (!idsUnicos.contains(asignacion.curId)) {
+        idsUnicos.add(asignacion.curId);
+        cursosAsignaciones.add(asignacion);
+      }
+    }
+    state = state.copyWith(cursosAsignaciones: cursosAsignaciones);
+  }
+
+  void seleccionarCursoAsignadoByCursoId(
+    int cursoId,
+    int materiaId,
+  ) async {
+    AsignacionDetalles cursoAsignadoSeleccionado = state.asignaciones!
+        .where((asignacion) =>
+            asignacion.curId == cursoId && asignacion.matId == materiaId)
+        .first;
+    state = state.copyWith(cursoAsignacionSelected: cursoAsignadoSeleccionado);
+
+    List<AsignacionDetalles> encuestasCursoAsignacionSelected = state
+        .asignaciones!
+        .where((asignacion) =>
+            asignacion.curId == cursoAsignadoSeleccionado.curId &&
+            asignacion.matId == materiaId)
+        .toList();
+    state = state.copyWith(
+        encuestasCursoAsignacionSelected: encuestasCursoAsignacionSelected);
+
+    List<Estudiante>? estudiantes = await docenteRepository
+        .obtenerEstudiantesByCursoIdMateriaId(cursoId, materiaId, token);
+    state = state.copyWith(estudiantes: estudiantes);
   }
 }
 

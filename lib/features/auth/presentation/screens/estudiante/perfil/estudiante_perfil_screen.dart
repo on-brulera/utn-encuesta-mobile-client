@@ -1,50 +1,105 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/shared/session_provider.dart';
+
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
 import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EstudiantePerfilScreen extends StatefulWidget {
+class EstudiantePerfilScreen extends ConsumerStatefulWidget {
   static String screenName = 'estudiante_perfil_screen';
   const EstudiantePerfilScreen({super.key});
 
   @override
-  State<EstudiantePerfilScreen> createState() => _EstudiantePerfilScreenState();
+  ConsumerState<EstudiantePerfilScreen> createState() =>
+      _EstudiantePerfilScreenState();
 }
 
-class _EstudiantePerfilScreenState extends State<EstudiantePerfilScreen> {
+class _EstudiantePerfilScreenState
+    extends ConsumerState<EstudiantePerfilScreen> {
   bool isEditing = false;
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  String? errorText;
 
   @override
   void dispose() {
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
+  void _savePassword(BuildContext context) async {
+    final session = ref.read(sessionProvider);
+    final user = session.user;
+    final token = session.token;
+
+    if (user == null || token.isEmpty) {
+      return;
+    }
+
+    final newPassword = _passwordController.text;
+    final messenger = ScaffoldMessenger.of(context);
+    final confirmed = await _showConfirmationDialog(context);
+    if (confirmed ?? false) {
+      final updatedUser = user.copyWith(password: newPassword);
+
+      final response = await ref
+          .read(sessionProvider.notifier)
+          .authRepository
+          .cambiarPassword(updatedUser, token);
+
+      if (response != null) {
+        messenger.showSnackBar(
+            const SnackBar(content: Text('Contraseña actualizada con éxito')));
+        setState(() {
+          isEditing = false;
+          _passwordController.clear();
+          _confirmPasswordController.clear();
+        });
+      } else {
+        messenger.showSnackBar(const SnackBar(
+            content: Text('Por favor complete todos los campos')));
+      }
+    }
+  }
+
+  Future<bool?> _showConfirmationDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar cambio de contraseña'),
+        content: const Text('¿Está seguro de que desea cambiar su contraseña?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Confirmar'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
+    final session = ref.watch(sessionProvider);
     return FadeIn(
       duration: const Duration(milliseconds: 1250),
       child: Scaffold(
-        appBar: AppBar(
-          title: AppTexts.title('Perfil'),
-          actions: [
-            IconButton.outlined(
-              onPressed: () =>
-                  context.go('/${EstudianteMenuDScreen.screenName}'),
-              icon: const Icon(Icons.exit_to_app_rounded),
-            ),
-            AppSpaces.horizontal20,
-          ],
-        ),
+        appBar: const CurstomAppBar(titulo: 'Perfil'),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(
-                  height: 200, // Ajusta la altura según lo necesites
+                  height: 200,
                   child: CustomImagenPerfil(),
                 ),
                 Padding(
@@ -55,21 +110,43 @@ class _EstudiantePerfilScreenState extends State<EstudiantePerfilScreen> {
                       AppTexts.title('Estudiante'),
                       AppSpaces.vertical15,
                       AppTexts.textNotification(
-                          'Responde Encuestas y Mira Resultados'),
+                          'Responde Encuestas y Observa Resultados'),
                       AppSpaces.vertical15,
-                      AppTexts.perfilText('D1002004003'),
+                      AppTexts.perfilText(
+                        session.user?.usuario ?? 'Usuario no disponible',
+                      ),
                       AppSpaces.vertical15,
                       Center(
                         child: isEditing
-                            ? SizedBox(
-                                width: 200, // Limita el ancho a 200
-                                child: TextField(
-                                  controller: _passwordController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Nueva contraseña',
+                            ? Column(
+                                children: [
+                                  SizedBox(
+                                    width: 200,
+                                    child: TextField(
+                                      controller: _passwordController,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Nueva contraseña',
+                                      ),
+                                      obscureText: true,
+                                    ),
                                   ),
-                                  obscureText: true,
-                                ),
+                                  AppSpaces.vertical10,
+                                  SizedBox(
+                                    width: 200,
+                                    child: TextField(
+                                      controller: _confirmPasswordController,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Confirmar contraseña',
+                                      ),
+                                      obscureText: true,
+                                    ),
+                                  ),
+                                  if (errorText != null)
+                                    Text(
+                                      errorText!,
+                                      style: const TextStyle(color: Colors.red),
+                                    ),
+                                ],
                               )
                             : AppTexts.perfilText('*******************'),
                       ),
@@ -77,12 +154,37 @@ class _EstudiantePerfilScreenState extends State<EstudiantePerfilScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(width: 5),
                           FloatingActionButton.extended(
                             onPressed: () {
-                              setState(() {
-                                isEditing = !isEditing;
-                              });
+                              if (isEditing) {
+                                final newPassword = _passwordController.text;
+                                final confirmPassword =
+                                    _confirmPasswordController.text;
+
+                                if (newPassword.length < 8) {
+                                  setState(() {
+                                    errorText =
+                                        'La contraseña debe tener al menos 8 caracteres';
+                                  });
+                                  return;
+                                }
+
+                                if (newPassword != confirmPassword) {
+                                  setState(() {
+                                    errorText = 'Las contraseñas no coinciden';
+                                  });
+                                  return;
+                                }
+
+                                setState(() {
+                                  errorText = null;
+                                });
+                                _savePassword(context);
+                              } else {
+                                setState(() {
+                                  isEditing = true;
+                                });
+                              }
                             },
                             elevation: 0,
                             backgroundColor: Colors.redAccent,

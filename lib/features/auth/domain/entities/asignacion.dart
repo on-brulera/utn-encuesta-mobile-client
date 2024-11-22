@@ -8,6 +8,7 @@ class Asignacion {
   final DateTime fechaCompletado;
   final bool realizado;
   final int usuIdAsignador;
+  final int parcialSeleccionado;
 
   Asignacion(
       {this.id = 0,
@@ -18,7 +19,8 @@ class Asignacion {
       required this.descripcion,
       required this.fechaCompletado,
       required this.realizado,
-      required this.usuIdAsignador});
+      required this.usuIdAsignador,
+      required this.parcialSeleccionado});
 
   Asignacion copyWith({
     int? id,
@@ -29,7 +31,8 @@ class Asignacion {
     String? descripcion,
     DateTime? fechaCompletado,
     bool? realizado,
-    int? usuIdAsignador
+    int? usuIdAsignador,
+    int? parcialSeleccionado
   }) =>
       Asignacion(
           id: id ?? this.id,
@@ -40,5 +43,6 @@ class Asignacion {
           descripcion: descripcion ?? this.descripcion,
           fechaCompletado: fechaCompletado ?? this.fechaCompletado,
           realizado: realizado ?? this.realizado,
-          usuIdAsignador: usuIdAsignador??this.usuIdAsignador);
+          usuIdAsignador: usuIdAsignador??this.usuIdAsignador, 
+          parcialSeleccionado: parcialSeleccionado?? this.parcialSeleccionado);
 }

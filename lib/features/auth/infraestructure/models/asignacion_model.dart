@@ -10,7 +10,8 @@ class AsignacionModel extends Asignacion {
       required super.descripcion,
       required super.fechaCompletado,
       required super.realizado,
-      required super.usuIdAsignador});
+      required super.usuIdAsignador,
+      required super.parcialSeleccionado});
 
   factory AsignacionModel.fromJson(Map<String, dynamic> json) =>
       AsignacionModel(
@@ -22,7 +23,9 @@ class AsignacionModel extends Asignacion {
           descripcion: json['asi_descripcion'] ?? 'Sin descripcion',
           fechaCompletado: DateTime.parse(json['asi_fecha_completado']),
           realizado: json['asi_realizado'] ?? false,
-          usuIdAsignador: json['usu_id_asignador']);
+          usuIdAsignador: json['usu_id_asignador'],
+          parcialSeleccionado: json['par_parcial_seleccionado']??0);
+          
 
   Map<String, dynamic> toJson() {
     return {
@@ -33,7 +36,8 @@ class AsignacionModel extends Asignacion {
       'asi_descripcion': descripcion,
       'asi_fecha_completado': fechaCompletado.toIso8601String(),
       'asi_realizado': realizado,
-      'usu_id_asignador': usuIdAsignador
+      'usu_id_asignador': usuIdAsignador,
+      'par_parcial_seleccionado': parcialSeleccionado
     };
   }
 
@@ -46,5 +50,6 @@ class AsignacionModel extends Asignacion {
       descripcion: asignacion.descripcion,
       fechaCompletado: asignacion.fechaCompletado,
       realizado: asignacion.realizado,
-      usuIdAsignador: asignacion.usuIdAsignador);
+      usuIdAsignador: asignacion.usuIdAsignador,
+      parcialSeleccionado: asignacion.parcialSeleccionado);
 }

@@ -35,4 +35,17 @@ class AuthRepositoryImpl implements AuthRepository {
       return null;
     }
   }
+
+  @override
+  Future<bool?> logout(String idusuario, String token) async {
+    try {
+      final response = await estilosAPI.get(
+        '/auth/logout/$idusuario',
+        options: addToken(token),
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      return null;
+    }
+  }
 }

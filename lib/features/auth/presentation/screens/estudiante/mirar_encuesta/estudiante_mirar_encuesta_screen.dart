@@ -1,10 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/encuesta.dart';
-import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
-import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class EstudianteMirarEncuestaScreen extends StatelessWidget {
   static String screenName = 'estudiante_mirar_encuesta_screen';
@@ -24,16 +21,7 @@ class EstudianteMirarEncuestaScreen extends StatelessWidget {
     return FadeIn(
       duration: const Duration(milliseconds: 1230),
       child: Scaffold(
-        appBar: AppBar(
-          title: AppTexts.title('Mirar Encuestas'),
-          actions: [
-            IconButton.outlined(
-                onPressed: () =>
-                    context.go('/${EstudianteMenuDScreen.screenName}'),
-                icon: const Icon(Icons.exit_to_app_rounded)),
-            AppSpaces.horizontal20,
-          ],
-        ),
+        appBar: const CurstomAppBar(titulo: 'Mirar Encuestas'),
         body: SafeArea(
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

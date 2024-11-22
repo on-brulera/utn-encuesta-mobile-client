@@ -355,7 +355,7 @@ class _CustomAsignarEncuestaCursoBoxState
                 final asignacionesExistentes =
                     listaAsignacionDetalleState.asignaciones;
 
-                final asignacionDuplicada = asignacionesExistentes.any((a) =>
+                final asignacionDuplicada = asignacionesExistentes!.any((a) =>
                     a.encId == int.tryParse(selectedEncuesta!)! &&
                     a.curId == int.tryParse(selectedCurso!)! &&
                     a.matId == int.tryParse(selectedAsignatura!)! &&

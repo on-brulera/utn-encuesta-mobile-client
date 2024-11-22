@@ -1,6 +1,7 @@
 import 'package:encuestas_utn/features/auth/domain/entities/encuesta.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/disenar_encuesta_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_encuesta_provider.dart';
+import 'package:encuestas_utn/features/auth/presentation/screens/docente/curso_asignacion/docente_curso_asignacion_screen.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/docente/disenar_encuesta/docente_disenar_encuesta_screen.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/docente/disenar_encuesta/docente_encuesta_detalles_screen.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
@@ -53,7 +54,7 @@ class CustomEncuestaItemList extends ConsumerWidget {
       ref
           .read(disenarEncuestaProvider.notifier)
           .cargarDatosEncuesta(encuestaId);
-      context.go('/${DocenteDisenarEncuestaScreen.screenName}');
+      context.pushNamed(DocenteDisenarEncuestaScreen.screenName);
     }
   }
 
@@ -123,7 +124,7 @@ class CustomEncuestaItemList extends ConsumerWidget {
         CustomButtonEncuestaLista(
           title: 'asignar',
           callback: () {
-            // Lógica futura
+            context.pushNamed(DocenteCursoAsignacionScreen.screenName);
           },
         ),
         AppSpaces.vertical5,

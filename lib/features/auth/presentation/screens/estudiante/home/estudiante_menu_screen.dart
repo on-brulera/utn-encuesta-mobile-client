@@ -15,48 +15,36 @@ class EstudianteMenuDScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //ITEMS PARA LOS MODULOS
     opcionesMenuEstudiante[0].callback =
-        () => context.go('/${EstudianteMirarEncuestaScreen.screenName}');
+        () => context.pushNamed(EstudianteMirarEncuestaScreen.screenName);
     opcionesMenuEstudiante[1].callback =
-        () => context.go('/${EstudianteCursoScreen.screenName}');
+        () => context.pushNamed(EstudianteCursoScreen.screenName);
     opcionesMenuEstudiante[2].callback =
-        () => context.go('/${EstudianteEstadisticaScreen.screenName}');
+        () => context.pushNamed(EstudianteEstadisticaScreen.screenName);
     opcionesMenuEstudiante[3].callback =
-        () => context.go('/${EstudiantePerfilScreen.screenName}');
+        () => context.pushNamed(EstudiantePerfilScreen.screenName);
 
     List<Notificacion> notificaciones = [
       Notificacion(
           texto: 'Tienes 1 encuesta por responder',
           callback: () =>
-              context.go('/${EstudianteEncuestasResponder.screenName}')),
+              context.pushNamed(EstudianteEncuestasResponder.screenName)),
       Notificacion(
           texto: 'Mire las estadísticas de la última encuesta ',
           callback: () {}),
       Notificacion(
           texto: 'Habla con IA sobre tu estilo de aprendizaje',
-          callback: () => context.go('/${ChatScreen.screenName}',
+          callback: () => context.pushNamed(ChatScreen.screenName,
               extra: UsuarioChat.estudiante)),
     ];
 
     return Scaffold(
+      appBar: const CurstomAppBar(titulo: 'Módulos'),
       body: SafeArea(
         child: FadeIn(
           duration: const Duration(seconds: 2),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppTexts.title('Módulos'),
-                      IconButton.outlined(
-                          onPressed: () =>
-                              context.go('/${LoginScreen.screenName}'),
-                          icon: const Icon(Icons.exit_to_app_rounded))
-                    ],
-                  ),
-                ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(

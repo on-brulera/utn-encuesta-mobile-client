@@ -38,17 +38,21 @@ abstract class DocenteRepository {
 
   Future<List<Materia>?> obtenerAllMateria(String token);
 
-  Future<List<Parcial>?> obtenerAllParcial( String token);
+  Future<List<Parcial>?> obtenerAllParcial(String token);
 
   Future<EncuestaDetalles?> obtenerEncuestaDellates(
       String token, int encuestaId);
-  
+
   //OBTENER DATOS POR IDENTIFICADOR
 
-  Future<User?> obtenerUsuarioByCedula(String cedula, String token);  
+  Future<User?> obtenerUsuarioByCedula(String cedula, String token);
 
-  Future<List<AsignacionDetalles>?> obtenerAsignacionesByDocenteId(int docenteId, String token);
+  Future<List<AsignacionDetalles>?> obtenerAsignacionesByDocenteId(
+      int docenteId, String token);
 
-  Future<Asignacion?> obtenerAsignacionByEncuestaId(int encuestaId, String token);
-
+  Future<Asignacion?> obtenerAsignacionByEncuestaId(
+      int encuestaId, String token);
+      
+  Future<List<Estudiante>?> obtenerEstudiantesByCursoIdMateriaId(
+      int cursoId, int materiaId, String token);
 }

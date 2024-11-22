@@ -40,10 +40,20 @@ class AppTexts {
           fontWeight: FontWeight.w400,
         ),
       );
+
   static perfilText(String text) => Text(
         text,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+      );
+
+  static courseText(String text) => Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.w500,
+          color: Colors.black54,
           fontSize: 15,
         ),
       );
@@ -60,6 +70,18 @@ class AppTexts {
           color: isPastDate
               ? const Color.fromARGB(255, 144, 38, 31)
               : const Color.fromARGB(255, 6, 123, 22), // Cambia el color aquí
+        ),
+      );
+    }
+  }
+
+  static fechaCurso(String fecha) {
+    {
+      return Text(
+        fecha,
+        style: const TextStyle(
+          fontSize: 10,
+          color: Color.fromARGB(255, 6, 123, 22),
         ),
       );
     }

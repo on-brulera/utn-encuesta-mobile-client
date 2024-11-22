@@ -1,13 +1,12 @@
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/disenar_encuesta_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_encuesta_provider.dart';
-import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/encuestas/disenar_encuesta/custom_regla_calculo_section.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/encuestas/disenar_encuesta/custom_tile_estilos_modelos.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/encuestas/disenar_encuesta/custom_tile_info_encuesta.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/encuestas/disenar_encuesta/custom_tiles_preguntas.dart';
+import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class DocenteDisenarEncuestaScreen extends ConsumerWidget {
   static String screenName = 'docente_disenar_encuesta_screen';
@@ -21,20 +20,7 @@ class DocenteDisenarEncuestaScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Diseñar Encuestas'),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        actions: [
-          IconButton.outlined(
-            onPressed: () => context.go('/${DocenteMenuDScreen.screenName}'),
-            icon: const Icon(Icons.exit_to_app_rounded),
-            color: Colors.black,
-          ),
-          const SizedBox(width: 20),
-        ],
-      ),
+      appBar: const CurstomAppBar(titulo: 'Diseñar Encuestas'),
       body: const SafeArea(
         child: SingleChildScrollView(
           child: Padding(

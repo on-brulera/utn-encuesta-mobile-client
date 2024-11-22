@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/disenar_encuesta_provider.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_asignacion_detalle_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_encuesta_provider.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/shared/session_provider.dart';
 import 'package:encuestas_utn/utils/configuration/const/menu_opcion.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/mensaje.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
@@ -15,70 +17,78 @@ class DocenteMenuDScreen extends ConsumerWidget {
   const DocenteMenuDScreen({super.key});
 
   @override
-  Widget build(BuildContext context, ref) {    
-      
-
+  Widget build(BuildContext context, ref) {
+    //Para las encuestas
     final listaEncuestaState = ref.watch(listaEncuestaProvider);
     final listaEncuestaNotifier = ref.read(listaEncuestaProvider.notifier);
     final int numeroDeEncuestas = listaEncuestaState.encuestas.length;
-
     final String textoEncuestas = numeroDeEncuestas == 1
         ? 'Tiene $numeroDeEncuestas test para su investigación'
         : 'Tiene $numeroDeEncuestas tests para su investigación';
 
+    //Para los cursos
+    final listaCursoAsignacionState = ref.watch(listaAsignacionDetalleProvider);
+    final listaCursoAsignacionNotifier =
+        ref.read(listaAsignacionDetalleProvider.notifier);
+    final int numeroDeCursos =
+        listaCursoAsignacionState.cursosAsignaciones!.length;
+    final String textoCursos = numeroDeEncuestas == 1
+        ? 'Tiene $numeroDeCursos curso a su disposición'
+        : 'Tiene $numeroDeCursos cursos a su disposición';
+
+    final sesionNotifier = ref.read(sessionProvider.notifier);
     // Cargar encuestas si aún no se han cargado
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (listaEncuestaState.encuestas.isEmpty &&
           !listaEncuestaState.isLoading) {
         listaEncuestaNotifier.obtenerTodasLasEncuestas();
       }
+      if (!listaCursoAsignacionState.hasLoaded &&
+          !listaCursoAsignacionState.isLoading) {
+        listaCursoAsignacionNotifier.obtenerTodasLasAsignaciones();
+      }
     });
+
+    //Cargar Cursos y ASignaciones
 
     //ITEMS PARA LOS MODULOS
 
     opcionesMenuDocente[0].callback = () {
       ref.read(disenarEncuestaProvider.notifier).limpiarEncuesta();
-      context.go('/${DocenteDisenarEncuestaScreen.screenName}');
+      context.pushNamed(DocenteDisenarEncuestaScreen.screenName);
     };
     opcionesMenuDocente[1].callback =
-        () => context.go('/${DocenteCursoAsignacionScreen.screenName}');
+        () => context.pushNamed(DocenteCursoAsignacionScreen.screenName);
     opcionesMenuDocente[2].callback =
-        () => context.go('/${DocenteEstadisticaScreen.screenName}');
+        () => context.pushNamed(DocenteEstadisticaScreen.screenName);
     opcionesMenuDocente[3].callback =
-        () => context.go('/${DocentePerfilScreen.screenName}');
+        () => context.pushNamed(DocentePerfilScreen.screenName);
 
     List<Notificacion> notificaciones = [
       Notificacion(
           texto: textoEncuestas,
           callback: () =>
-              context.go('/${DocenteListaEncuestaScreen.screenName}')),
-      Notificacion(texto: 'Tiene 10 cursos a su disposición', callback: () {}),
+              context.pushNamed(DocenteListaEncuestaScreen.screenName)),
+      Notificacion(
+          texto: textoCursos,
+          callback: () =>
+              context.pushNamed(DocenteListaCursoScreen.screenName)),
       Notificacion(
           texto: 'Habla con IA sobre los estilos de aprendizaje',
-          callback: () => context.go('/${ChatScreen.screenName}',
+          callback: () => context.pushNamed(ChatScreen.screenName,
               extra: UsuarioChat.docente)),
     ];
 
     return Scaffold(
+      appBar: const CurstomAppBar(
+        titulo: "Módulos",
+      ),
       body: SafeArea(
         child: FadeIn(
           duration: const Duration(seconds: 2),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppTexts.title('Módulos'),
-                      IconButton.outlined(
-                          onPressed: () =>
-                              context.go('/${LoginScreen.screenName}'),
-                          icon: const Icon(Icons.exit_to_app_rounded))
-                    ],
-                  ),
-                ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(

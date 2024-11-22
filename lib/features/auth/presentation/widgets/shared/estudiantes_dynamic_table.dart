@@ -47,9 +47,12 @@ class _EstudiantesDynamicTableState extends State<EstudiantesDynamicTable> {
       children: [
         // Tabla dinámica
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.9,
+          width: MediaQuery.of(context).size.width * 1,
           child: DynamicTable(
-            header: const Text("Tabla de Estudiantes"),
+            header: const Text(
+              "Tabla de Estudiantes",
+              style: TextStyle(fontSize: 18),
+            ),
             rowsPerPage: 5,
             showFirstLastButtons: false,
             availableRowsPerPage: const [5, 10],
@@ -62,6 +65,7 @@ class _EstudiantesDynamicTableState extends State<EstudiantesDynamicTable> {
             rows: List.generate(
               sortedEstudiantes.length,
               (index) => DynamicTableDataRow(
+                color: const WidgetStatePropertyAll(Colors.white12),
                 index: index,
                 cells: [
                   DynamicTableDataCell(value: sortedEstudiantes[index].nombre),

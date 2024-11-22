@@ -337,4 +337,25 @@ class DocenteRepositoryImpl implements DocenteRepository {
       return null;
     }
   }
+
+  @override
+  Future<List<Estudiante>?> obtenerEstudiantesByCursoIdMateriaId(
+      int cursoId, int materiaId, String token) async {
+    try {
+      final response = await estilosAPI.get(
+        '/personas/curso/notas/$cursoId/$materiaId',
+        options: addToken(token),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> estudiantesJson = response.data['data'];
+        final List<Estudiante> estudiantes = estudiantesJson
+            .map((json) => EstudianteModel.fromJson(json))
+            .toList();
+        return estudiantes;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
 }

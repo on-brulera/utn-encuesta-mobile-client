@@ -1,11 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/shared/session_provider.dart';
-import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
 import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class DocentePerfilScreen extends ConsumerStatefulWidget {
   static String screenName = 'docente_perfil_screen';
@@ -93,16 +91,7 @@ class _DocentePerfilScreenState extends ConsumerState<DocentePerfilScreen> {
     return FadeIn(
       duration: const Duration(milliseconds: 1250),
       child: Scaffold(
-        appBar: AppBar(
-          title: AppTexts.title('Perfil'),
-          actions: [
-            IconButton.outlined(
-              onPressed: () => context.go('/${DocenteMenuDScreen.screenName}'),
-              icon: const Icon(Icons.exit_to_app_rounded),
-            ),
-            AppSpaces.horizontal20,
-          ],
-        ),
+        appBar: const CurstomAppBar(titulo: 'Perfil'),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
