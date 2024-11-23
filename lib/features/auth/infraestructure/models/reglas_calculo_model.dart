@@ -12,10 +12,10 @@ class ReglasCalculoModel extends ReglasCalculo {
           encuestaId: json['enc_id'],
           reglasJson: json['reglas_json'] as Map<String, dynamic>);
 
-  Map<String, dynamic> toJson(ReglasCalculoModel reglas) {
+  Map<String, dynamic> toJson() {
     return {"enc_id": encuestaId, "reglas_json": reglasJson};
   }
 
-  ReglasCalculoModel toModel(ReglasCalculo regla) => ReglasCalculoModel(
+  static ReglasCalculoModel toModel(ReglasCalculo regla) => ReglasCalculoModel(
       id: regla.id, encuestaId: regla.encuestaId, reglasJson: regla.reglasJson);
 }

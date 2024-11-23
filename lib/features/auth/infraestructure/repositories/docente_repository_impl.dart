@@ -358,4 +358,20 @@ class DocenteRepositoryImpl implements DocenteRepository {
       return null;
     }
   }
+  
+  @override
+  Future<ReglasCalculo?> crearReglaDeCalculo(ReglasCalculo regla, String token) async{
+    try {
+      final response = await estilosAPI.post('/regla',
+          data: ReglasCalculoModel.toModel(regla).toJson(),
+          options: addToken(token));
+      if (response.statusCode == 201) {
+        return ReglasCalculoModel.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

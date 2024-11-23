@@ -58,21 +58,33 @@ class AppTexts {
         ),
       );
 
-  static fechaEncuesta(String fecha) {
-    {
-      final DateTime today = DateTime.now();
-      final DateTime fechaEncuesta = DateFormat('dd-MM-yyyy').parse(fecha);
-      final bool isPastDate = fechaEncuesta.isBefore(today);
-      return Text(
-        isPastDate ? 'Cerró el $fecha' : 'Cierra el $fecha',
-        style: TextStyle(
-          fontSize: 10,
-          color: isPastDate
-              ? const Color.fromARGB(255, 144, 38, 31)
-              : const Color.fromARGB(255, 6, 123, 22), // Cambia el color aquí
-        ),
-      );
-    }
+  static Widget fechaEncuesta(String fechaISO) {
+    final DateTime now = DateTime.now();
+
+    // Parsear fecha en formato ISO 8601
+    final DateTime fechaEncuesta = DateTime.parse(fechaISO);
+
+    // Determinar si la fecha ya pasó
+    final bool isPastDate = fechaEncuesta.isBefore(now);
+
+    // Formatear fecha y hora en el formato deseado
+    final String formattedDate = DateFormat('dd-MM-yyyy').format(fechaEncuesta);
+    final String formattedTime = DateFormat('HH:mm').format(fechaEncuesta);
+
+    // Construir el texto
+    final String displayText = isPastDate
+        ? 'Cerró el $formattedDate a las $formattedTime'
+        : 'Cierra el $formattedDate a las $formattedTime';
+
+    return Text(
+      displayText,
+      style: TextStyle(
+        fontSize: 10,
+        color: isPastDate
+            ? const Color.fromARGB(255, 144, 38, 31) // Color rojo
+            : const Color.fromARGB(255, 6, 123, 22), // Color verde
+      ),
+    );
   }
 
   static fechaCurso(String fecha) {

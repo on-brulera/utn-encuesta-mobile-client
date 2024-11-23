@@ -73,9 +73,9 @@ class _CustomTileEstilosModelosState
   }
 
   final Map<String, String> modelos = {
-    'Modelo 1': 'Felder y Silverman',
-    'Modelo 2': 'Gardner',
-    'Modelo 3': 'Bandler & Grinder',
+    'Modelo 1': 'Para modelos generales con opcion múltiple',
+    'Modelo 2': 'Para modelos generales con opcion de verdadero y falso',
+    'Modelo 3': 'Para modelos con doble parametro de estilos de aprendizaje',
   };
 
   Widget _buildEditableSection(

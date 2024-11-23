@@ -1,12 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_asignacion_detalle_provider.dart';
-import 'package:encuestas_utn/features/auth/presentation/screens/docente/home/docente_menu_screen.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/curso/custom_mirar_curso_card.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
-import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class DocenteListaCursoScreen extends ConsumerWidget {
   static String screenName = 'docente_lista_curso_screen';

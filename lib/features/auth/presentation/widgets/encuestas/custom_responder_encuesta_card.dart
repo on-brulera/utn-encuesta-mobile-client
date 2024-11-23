@@ -1,7 +1,9 @@
 import 'package:encuestas_utn/features/auth/domain/entities/encuesta.dart';
+import 'package:encuestas_utn/features/auth/presentation/screens/estudiante/mirar_encuesta/estudiante_encuesta_detalles_responder_screen.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
 import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomResponderEncuestaCard extends StatelessWidget {
   final Encuesta encuesta;
@@ -39,8 +41,9 @@ class CustomResponderEncuestaCard extends StatelessWidget {
                 AppSpaces.vertical5,
                 AppTexts.commentNotification(encuesta.autor),
                 AppSpaces.vertical5,
-                AppTexts.numberNotification(
-                    '${encuesta.numPreguntas} ${encuesta.numPreguntas == 1 ? 'Pregunta' : 'Preguntas'}')
+                // AppTexts.numberNotification(encuesta.descripcion),
+                AppSpaces.vertical5,
+                AppTexts.fechaEncuesta(encuesta.fechaLimite),
               ],
             ),
           )),
@@ -60,7 +63,12 @@ class CustomResponderEncuestaCard extends StatelessWidget {
               children: [
                 CustomButtonEncuestaLista(
                   title: 'responder',
-                  callback: () {},
+                  callback: () => context.pushNamed(
+                      EstudianteEncuestaDetallesResponderScreen.screenName,
+                      pathParameters: {
+                        'idEncuesta': encuesta.id.toString(),
+                        'idAsignacion': encuesta.idAsignacion.toString()
+                      }),
                 ),
                 AppSpaces.vertical5,
               ],

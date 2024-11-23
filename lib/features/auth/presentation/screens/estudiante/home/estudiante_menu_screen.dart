@@ -1,18 +1,22 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:encuestas_utn/utils/configuration/const/menu_opcion.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/mensaje.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/estudiante/estudiante_asignaciones_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
+import 'package:encuestas_utn/utils/configuration/const/menu_opcion.dart';
 import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class EstudianteMenuDScreen extends StatelessWidget {
+class EstudianteMenuDScreen extends ConsumerWidget {
   static String screenName = 'menuestudiantescreen';
   const EstudianteMenuDScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stateAsignacionEncuesta = ref.watch(estudianteAsignacionProvider);
+
     //ITEMS PARA LOS MODULOS
     opcionesMenuEstudiante[0].callback =
         () => context.pushNamed(EstudianteMirarEncuestaScreen.screenName);
@@ -25,9 +29,11 @@ class EstudianteMenuDScreen extends StatelessWidget {
 
     List<Notificacion> notificaciones = [
       Notificacion(
-          texto: 'Tienes 1 encuesta por responder',
-          callback: () =>
-              context.pushNamed(EstudianteEncuestasResponder.screenName)),
+          texto: obtenerTextoEncuestaResponder(
+              stateAsignacionEncuesta.encuestasPorResponder!.length),
+          callback: () {
+            context.pushNamed(EstudianteEncuestasResponder.screenName);
+          }),
       Notificacion(
           texto: 'Mire las estadísticas de la última encuesta ',
           callback: () {}),
@@ -75,4 +81,10 @@ class EstudianteMenuDScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+String obtenerTextoEncuestaResponder(int numEncuestas) {
+  if (numEncuestas == 0) return "No tienes encuestas por responder";
+  if (numEncuestas == 1) return "Tienes $numEncuestas encuesta por responder";
+  return "Tienes $numEncuestas encuestas por responder";
 }

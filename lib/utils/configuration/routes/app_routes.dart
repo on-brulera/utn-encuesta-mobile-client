@@ -2,6 +2,7 @@ import 'package:encuestas_utn/features/auth/domain/entities/mensaje.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+
 // GoRouter configuration
 final appRoutes = GoRouter(
   initialLocation: '/${LoginScreen.screenName}',
@@ -11,7 +12,7 @@ final appRoutes = GoRouter(
       path: '/${LoginScreen.screenName}',
       name: LoginScreen.screenName,
       builder: (context, state) => const LoginScreen(),
-    ),    
+    ),
     GoRoute(
       path: '/${ChatScreen.screenName}',
       name: ChatScreen.screenName,
@@ -79,7 +80,6 @@ final appRoutes = GoRouter(
       builder: (context, state) => const DocenteCursoDetalleScreen(),
     ),
 
-
     //RUTAS PARA EL ESTUDIANTE
     GoRoute(
       path: '/${EstudiantePerfilScreen.screenName}',
@@ -105,11 +105,55 @@ final appRoutes = GoRouter(
       path: '/${EstudianteMenuDScreen.screenName}',
       name: EstudianteMenuDScreen.screenName,
       builder: (context, state) => const EstudianteMenuDScreen(),
-    ),    
+    ),
     GoRoute(
       path: '/${EstudianteEncuestasResponder.screenName}',
       name: EstudianteEncuestasResponder.screenName,
       builder: (context, state) => const EstudianteEncuestasResponder(),
+    ),
+    GoRoute(
+      path:
+          '/${EstudianteEncuestaDetallesScreen.screenName}/:idEncuesta/:idAsignacion',
+      name:
+          EstudianteEncuestaDetallesScreen.screenName, // Define un nombre único
+      builder: (context, state) {
+        final idEncuesta =
+            int.tryParse(state.pathParameters['idEncuesta'] ?? '');
+        final idAsignacion =
+            int.tryParse(state.pathParameters['idAsignacion'] ?? '');
+        if (idEncuesta == null && idAsignacion == null) {
+          return const Scaffold(
+            body: Center(
+              child: Text('ID de encuesta y asignación no válido'),
+            ),
+          );
+        }
+        return EstudianteEncuestaDetallesScreen(idEncuesta: idEncuesta!, idAsignacion: idAsignacion!,);
+      },
+    ),
+    GoRoute(
+      path:
+          '/${EstudianteEncuestaDetallesResponderScreen.screenName}/:idEncuesta/:idAsignacion',
+      name:
+          EstudianteEncuestaDetallesResponderScreen
+          .screenName, // Define un nombre único
+      builder: (context, state) {
+        final idEncuesta =
+            int.tryParse(state.pathParameters['idEncuesta'] ?? '');
+        final idAsignacion =
+            int.tryParse(state.pathParameters['idAsignacion'] ?? '');
+        if (idEncuesta == null && idAsignacion == null) {
+          return const Scaffold(
+            body: Center(
+              child: Text('ID de encuesta y asignación no válido'),
+            ),
+          );
+        }
+        return EstudianteEncuestaDetallesResponderScreen(
+          idEncuesta: idEncuesta!,
+          idAsignacion: idAsignacion!,
+        );
+      },
     ),
   ],
 );

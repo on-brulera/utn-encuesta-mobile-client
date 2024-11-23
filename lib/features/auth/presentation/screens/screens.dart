@@ -1,4 +1,6 @@
 //PARA ESTUDIANTES
+export 'package:encuestas_utn/features/auth/presentation/screens/estudiante/mirar_encuesta/estudiante_encuesta_detalles_responder_screen.dart';
+export 'package:encuestas_utn/features/auth/presentation/screens/estudiante/mirar_encuesta/estudiante_encuesta_detalles_screen.dart';
 export 'package:encuestas_utn/features/auth/presentation/screens/chat/chat_screen.dart';
 
 export 'package:encuestas_utn/features/auth/presentation/screens/estudiante/mirar_encuesta/estudiante_encuestas_responder.dart';

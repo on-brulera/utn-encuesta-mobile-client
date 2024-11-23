@@ -6,11 +6,9 @@ class Encuesta {
   final bool cuantitativa;
   final DateTime fechaCreacion;
 
-  //atributoss que no estan en la entidad de la bdd
-  final String fecha = '23-01-2024';
-  final String curso = 'Curso A';
-  final String parcial = 'Parcial 1';
-  final int numPreguntas = 100;
+  //atributo para pocos,
+  final int idAsignacion;
+  final String fechaLimite;
 
   Encuesta({
     this.id = 0,
@@ -19,6 +17,8 @@ class Encuesta {
     this.autor = '',
     this.cuantitativa = false,
     required this.fechaCreacion,
+    this.idAsignacion = 0,
+    this.fechaLimite ='',
   });
 
   Encuesta copyWith({
@@ -28,13 +28,18 @@ class Encuesta {
     String? autor,
     bool? cuantitativa,
     DateTime? fechaCreacion,
+    int? idAsignacion,
+    String? fechaLimite,
   }) {
     return Encuesta(
-      id: id?? this.id,
-      titulo: titulo?? this.titulo,
-      autor: autor?? this.autor,
-      descripcion: descripcion?? this.descripcion,
-      cuantitativa: cuantitativa?? this.cuantitativa,
-      fechaCreacion: fechaCreacion?? this.fechaCreacion);
+        id: id ?? this.id,
+        titulo: titulo ?? this.titulo,
+        autor: autor ?? this.autor,
+        descripcion: descripcion ?? this.descripcion,
+        cuantitativa: cuantitativa ?? this.cuantitativa,
+        fechaCreacion: fechaCreacion ?? this.fechaCreacion,
+        idAsignacion: idAsignacion?? this.idAsignacion,
+        fechaLimite: fechaLimite??this.fechaLimite);
+        
   }
 }

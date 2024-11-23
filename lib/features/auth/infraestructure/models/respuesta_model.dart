@@ -27,7 +27,7 @@ class RespuestaModel extends Respuesta {
     };
   }
 
-  RespuestaModel toModel(Respuesta respuesta) => RespuestaModel(
+  static RespuestaModel toModel(Respuesta respuesta) => RespuestaModel(
       id: respuesta.id,
       usuarioId: respuesta.usuarioId,
       asignacionId: respuesta.asignacionId,

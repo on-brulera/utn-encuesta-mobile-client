@@ -19,8 +19,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   Animation<double>? _animacaoBlur;
   Animation<double>? _animacaoFade;
   Animation<double>? _animacaoSize;
-  String _usuario = 'E5004003030';
+  String _usuario = 'D5004003030';
   String _contrasena = 'test1234';
+  // String _usuario = 'E8986051555';
+  // String _contrasena = 'E8986051555';
 
   @override
   void initState() {

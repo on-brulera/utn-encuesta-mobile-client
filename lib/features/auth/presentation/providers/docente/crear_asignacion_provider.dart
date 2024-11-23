@@ -1,4 +1,5 @@
 import 'package:encuestas_utn/features/auth/presentation/providers/shared/session_provider.dart';
+import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/entities.dart';
 import 'package:encuestas_utn/features/auth/infraestructure/repositories/docente_repository_impl.dart';
@@ -41,7 +42,7 @@ class CrearAsignacionNotifier extends StateNotifier<CrearAsignacionState> {
       : super(CrearAsignacionState());
 
   Future<void> crearAsignacion(List<Estudiante> estudiantes, int encuestaId,
-      int cursoId, int materiaId, int parcialId) async {
+      int cursoId, int materiaId, int parcialId, String fechaLimite) async {
     state =
         state.copyWith(isLoading: true, error: null, asignacionCreada: null);
     try {
@@ -80,7 +81,7 @@ class CrearAsignacionNotifier extends StateNotifier<CrearAsignacionState> {
                 cursoId: cursoId,
                 materiaId: materiaId,
                 descripcion: 'Responde rápidamente la encuesta',
-                fechaCompletado: DateTime.now(),
+                fechaCompletado: convertirAISO8601(fechaLimite),
                 realizado: false,
                 usuIdAsignador: idUsuarioDocente,
                 parcialSeleccionado: parcialId),
@@ -95,7 +96,7 @@ class CrearAsignacionNotifier extends StateNotifier<CrearAsignacionState> {
               cursoId: 0,
               materiaId: 0,
               descripcion: '',
-              fechaCompletado: DateTime.now(),
+              fechaCompletado: convertirAISO8601(fechaLimite),
               realizado: false,
               usuIdAsignador: 0,
               parcialSeleccionado: 0));

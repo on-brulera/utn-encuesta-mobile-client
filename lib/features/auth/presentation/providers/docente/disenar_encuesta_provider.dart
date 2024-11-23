@@ -1,11 +1,12 @@
 import 'package:encuestas_utn/features/auth/domain/entities/entities.dart';
 import 'package:encuestas_utn/features/auth/infraestructure/repositories/docente_repository_impl.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/shared/session_provider.dart';
+import 'package:encuestas_utn/utils/modelos_to_json.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DisenarEncuestaState {
   final Encuesta? encuesta;
-  final Map<String, String> modeloSeleccionado;
+  final String? modeloSeleccionado;
   final List<Estilo>? estilosEncuesta;
   final String? valorPregunta;
   final List<PreguntaOpciones> preguntas;
@@ -13,11 +14,11 @@ class DisenarEncuestaState {
   DisenarEncuestaState({
     List<PreguntaOpciones>? preguntas,
     Encuesta? encuesta,
-    Map<String, String>? modeloSeleccionado,
+    String? modeloSeleccionado,
     List<Estilo>? estilosEncuesta,
     this.valorPregunta,
   })  : encuesta = encuesta ?? Encuesta(fechaCreacion: DateTime.now()),
-        modeloSeleccionado = modeloSeleccionado ?? {},
+        modeloSeleccionado = modeloSeleccionado ?? '',
         estilosEncuesta = estilosEncuesta ?? [],
         preguntas = preguntas ?? [];
 
@@ -268,6 +269,21 @@ class DisenarEncuestaNotifier extends StateNotifier<DisenarEncuestaState> {
         }
         preguntasOpcionesActualizados.add(PreguntaOpciones(
             pregunta: preguntaAPI!, opciones: opcionesActualizadas));
+        Map<String, dynamic> jsonReglas = {};
+        if (state.modeloSeleccionado == 'Modelo 1') {
+          jsonReglas = generarReglasJsonModelo1(
+              preguntasConOpciones: preguntasOpcionesActualizados);
+        }
+        if (state.modeloSeleccionado == 'Modelo 2') {
+          jsonReglas = generarReglasDinamicasJsonModelo2(
+              preguntasConOpciones: preguntasOpcionesActualizados);
+        }
+        if (state.modeloSeleccionado == 'Modelo 3') {
+          jsonReglas = generarReglasDinamicasJsonModelo3(
+              preguntasConOpciones: preguntasOpcionesActualizados);
+        }
+        await docenteRepository.crearReglaDeCalculo(
+            ReglasCalculo(encuestaId: test.id, reglasJson: jsonReglas), token);
       }
       state = state.copyWith(preguntas: preguntasOpcionesActualizados);
       limpiarEncuesta();

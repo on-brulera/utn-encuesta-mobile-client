@@ -376,7 +376,8 @@ class _CustomAsignarEncuestaCursoBoxState
                         int.tryParse(selectedEncuesta!)!,
                         int.tryParse(selectedCurso!)!,
                         int.tryParse(selectedAsignatura!)!,
-                        int.tryParse(selectedParcial!)!);
+                        int.tryParse(selectedParcial!)!,
+                        fechaLimiteController.text);
 
                 // Manejar el resultado
                 if (ref.read(crearAsignacionProvider).asignacionCreada !=

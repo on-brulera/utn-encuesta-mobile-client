@@ -52,7 +52,10 @@ abstract class DocenteRepository {
 
   Future<Asignacion?> obtenerAsignacionByEncuestaId(
       int encuestaId, String token);
-      
+
   Future<List<Estudiante>?> obtenerEstudiantesByCursoIdMateriaId(
       int cursoId, int materiaId, String token);
+
+  //PARA LA CREACIÓN DE REGLAS DE CALCULO
+  Future<ReglasCalculo?> crearReglaDeCalculo(ReglasCalculo regla, String token);
 }

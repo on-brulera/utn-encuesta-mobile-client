@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 export 'package:encuestas_utn/utils/app_texts.dart';
 export 'package:encuestas_utn/utils/app_assets.dart';
 export 'package:encuestas_utn/utils/app_spaces.dart';
-
+import 'package:intl/intl.dart';
 
 class DateInputFormatter extends TextInputFormatter {
   @override
@@ -34,3 +34,31 @@ class DateInputFormatter extends TextInputFormatter {
     );
   }
 }
+
+DateTime convertirAISO8601(String fecha) {
+  // Importar el paquete intl si necesitas formatear de forma personalizada
+  // Asegúrate de tener intl en tu pubspec.yaml:
+  // dependencies:
+  //   intl: ^0.18.0
+
+  try {
+    // Parsear la fecha desde el formato "dd-MM-yyyy"
+    DateFormat formatoEntrada = DateFormat("dd-MM-yyyy");
+    DateTime fechaConvertida = formatoEntrada.parse(fecha);
+
+    // Crear una nueva fecha con hora 23:59
+    DateTime fechaFinal = DateTime(
+      fechaConvertida.year,
+      fechaConvertida.month,
+      fechaConvertida.day,
+      23,
+      59,
+    );
+
+    // Convertir la fecha al formato ISO 8601
+    return fechaFinal;
+  } catch (e) {
+    throw FormatException("Formato de fecha inválido: $fecha");
+  }
+}
+

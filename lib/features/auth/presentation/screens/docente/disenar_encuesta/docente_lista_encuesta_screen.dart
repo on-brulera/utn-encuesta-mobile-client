@@ -1,10 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_encuesta_provider.dart';
-import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class DocenteListaEncuestaScreen extends ConsumerWidget {
   static const String screenName = 'docente_lista_encuesta_screen';

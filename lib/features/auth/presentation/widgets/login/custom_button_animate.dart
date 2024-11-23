@@ -1,3 +1,4 @@
+import 'package:encuestas_utn/features/auth/presentation/providers/estudiante/estudiante_asignaciones_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/shared/session_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -65,11 +66,38 @@ class CustomButtonAnimate extends ConsumerWidget {
 
         // Verificamos el estado de la sesión después del login
         final sessionState = ref.read(sessionProvider);
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
           if (sessionState.token.isNotEmpty) {
-            // Redirige según el rol del usuario en sessionState
             if (sessionState.user?.rol == 'EST') {
-              context.go('/${EstudianteMenuDScreen.screenName}');
+              //PARA LAS ASIGNACIONES Y ENCUESTAS
+              final estudianteAsignacionNotifier =
+                  ref.read(estudianteAsignacionProvider.notifier);
+              // Ejecutar las operaciones de carga y esperar a que terminen
+              final estudianteAsignacionState =
+                  ref.read(estudianteAsignacionProvider);
+
+              if (!estudianteAsignacionState.isLoaded &&
+                  !estudianteAsignacionState.isLoading) {
+                await estudianteAsignacionNotifier
+                    .obtenerAsignacionesEncuestas();
+              }
+
+              // Verificar nuevamente después de cargar
+              final asignacionesCargadas =
+                  ref.read(estudianteAsignacionProvider).isLoaded;
+
+              if (asignacionesCargadas) {
+                if (context.mounted) {
+                  context.go('/${EstudianteMenuDScreen.screenName}');
+                }
+              } else {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Error al cargar los datos.')),
+                  );
+                }
+              }
             } else if (sessionState.user?.rol == 'DOC') {
               context.go('/${DocenteMenuDScreen.screenName}');
             } else {
