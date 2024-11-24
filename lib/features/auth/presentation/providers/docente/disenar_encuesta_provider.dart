@@ -26,14 +26,15 @@ class DisenarEncuestaState {
     List<Estilo>? estilosEncuesta,
     Encuesta? encuesta,
     String? valorPregunta,
-    Map<String, String>? modeloSeleccionado,
+    String? modeloSeleccionado,
     List<PreguntaOpciones>? preguntas,
   }) {
     return DisenarEncuestaState(
         encuesta: encuesta ?? this.encuesta,
         valorPregunta: valorPregunta ?? this.valorPregunta,
         estilosEncuesta: estilosEncuesta ?? this.estilosEncuesta,
-        preguntas: preguntas ?? this.preguntas);
+        preguntas: preguntas ?? this.preguntas,
+        modeloSeleccionado: modeloSeleccionado??this.modeloSeleccionado);
   }
 }
 
@@ -98,9 +99,8 @@ class DisenarEncuestaNotifier extends StateNotifier<DisenarEncuestaState> {
     );
   }
 
-  void setModeloSeleccionado(String modelo) {
-    final nuevoModelo = {'modelo': modelo};
-    state = state.copyWith(modeloSeleccionado: nuevoModelo);
+  void setModeloSeleccionado(String modelo) {    
+    state = state.copyWith(modeloSeleccionado: modelo);
   }
 
   //PARA LA GESTION DE PREGUNTAS Y OPCIONES
@@ -262,29 +262,30 @@ class DisenarEncuestaNotifier extends StateNotifier<DisenarEncuestaState> {
               opcion.copyWith(
                 preguntaId: preguntaAPI!.id,
                 estiloId: idEstilo.id,
+                valorCuantitativo: 1
               ),
               token);
           opcionesActualizadas
               .add(opcionAPI!.copyWith(nombreEstilo: opcion.nombreEstilo));
         }
         preguntasOpcionesActualizados.add(PreguntaOpciones(
-            pregunta: preguntaAPI!, opciones: opcionesActualizadas));
-        Map<String, dynamic> jsonReglas = {};
-        if (state.modeloSeleccionado == 'Modelo 1') {
-          jsonReglas = generarReglasJsonModelo1(
-              preguntasConOpciones: preguntasOpcionesActualizados);
-        }
-        if (state.modeloSeleccionado == 'Modelo 2') {
-          jsonReglas = generarReglasDinamicasJsonModelo2(
-              preguntasConOpciones: preguntasOpcionesActualizados);
-        }
-        if (state.modeloSeleccionado == 'Modelo 3') {
-          jsonReglas = generarReglasDinamicasJsonModelo3(
-              preguntasConOpciones: preguntasOpcionesActualizados);
-        }
-        await docenteRepository.crearReglaDeCalculo(
-            ReglasCalculo(encuestaId: test.id, reglasJson: jsonReglas), token);
+            pregunta: preguntaAPI!, opciones: opcionesActualizadas));        
       }
+      Map<String, dynamic> jsonReglas = {};
+      if (state.modeloSeleccionado == 'Modelo 1') {
+        jsonReglas = generarReglasJsonModelo1(
+            preguntasConOpciones: preguntasOpcionesActualizados);
+      }
+      if (state.modeloSeleccionado == 'Modelo 2') {
+        jsonReglas = generarReglasDinamicasJsonModelo2(
+            preguntasConOpciones: preguntasOpcionesActualizados);
+      }
+      if (state.modeloSeleccionado == 'Modelo 3') {
+        jsonReglas = generarReglasDinamicasJsonModelo3(
+            preguntasConOpciones: preguntasOpcionesActualizados);
+      }
+      await docenteRepository.crearReglaDeCalculo(
+          ReglasCalculo(encuestaId: state.encuesta!.id, reglasJson: jsonReglas), token);
       state = state.copyWith(preguntas: preguntasOpcionesActualizados);
       limpiarEncuesta();
       return true; // Si todo salió bien

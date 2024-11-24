@@ -40,7 +40,7 @@ class _CustomTileEstilosModelosState
                   setState(() {
                     _selectedModel = value;
                     _modelDescription = modelos[value] ?? '';
-                    disenarEncuestaNotifier.setModeloSeleccionado(value!);
+                    disenarEncuestaNotifier.setModeloSeleccionado(_selectedModel!);
                   });
                 },
                 items: modelos.keys.map((modelo) {

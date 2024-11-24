@@ -362,7 +362,7 @@ class DocenteRepositoryImpl implements DocenteRepository {
   @override
   Future<ReglasCalculo?> crearReglaDeCalculo(ReglasCalculo regla, String token) async{
     try {
-      final response = await estilosAPI.post('/regla',
+      final response = await estilosAPI.post('/reglas',
           data: ReglasCalculoModel.toModel(regla).toJson(),
           options: addToken(token));
       if (response.statusCode == 201) {
