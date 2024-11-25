@@ -67,12 +67,14 @@ class EstudianteRepositoryImpl implements EstudianteRepository {
       return null;
     }
   }
-  
+
   @override
-  Future<Respuesta?> enviarRespuestasDeEncuesta(Respuesta respuesta, String token) async{
+  Future<Respuesta?> enviarRespuestasDeEncuesta(
+      Respuesta respuesta, String token) async {
     try {
       final response = await estilosAPI.post('/respuesta',
-          data: RespuestaModel.toModel(respuesta).toJson(), options: addToken(token));
+          data: RespuestaModel.toModel(respuesta).toJson(),
+          options: addToken(token));
       if (response.statusCode == 201) {
         return RespuestaModel.fromJson(response.data['data']);
       } else {
@@ -82,17 +84,75 @@ class EstudianteRepositoryImpl implements EstudianteRepository {
       return null;
     }
   }
-  
+
   @override
-  Future<Asignacion?> marcarAsignacionTerminada(int idAsignacion, String token) async {
+  Future<Asignacion?> marcarAsignacionTerminada(
+      int idAsignacion, String token) async {
     try {
-      final response = await estilosAPI.get('/asignacion/usuario/terminada/$idAsignacion',
+      final response = await estilosAPI.get(
+          '/asignacion/usuario/terminada/$idAsignacion',
           options: addToken(token));
       if (response.statusCode == 200) {
         return AsignacionModel.fromJson(response.data['data']);
       } else {
         return null;
       }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<bool> calificarTestcalificarTest(
+    String modelo,
+    Map<String, dynamic> reglasJson,
+    List<Map<String, dynamic>> respuestas,
+    int idAsignacion,
+    String cedulaEstudiante,
+    String token,
+  ) async {
+    try {
+      // Construir el JSON a enviar
+      final Map<String, dynamic> jsonData = {
+        "Modelo": modelo,
+        "reglas_json": [reglasJson],
+        "respuestas": respuestas,
+        "idAsignacion": idAsignacion,
+        "est_cedula": cedulaEstudiante,
+      };
+
+      // Enviar el JSON a la API
+      final response = await estilosAPI.post(
+        '/recalificar/app',
+        data: jsonData,
+        options: addToken(token),
+      );
+
+      // Verificar la respuesta
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<Historial?> obtenerResultadoTestEstudianteByAsignacionId(
+      int idAsignacion, String token) async {
+    try {
+      final Map<String, dynamic> jsonData = {
+        "ids_asignacion": [idAsignacion],
+      };
+
+      final response = await estilosAPI.post(
+        '/historial/asignacion',
+        data: jsonData,
+        options: addToken(token),
+      );
+
+      if (response.statusCode == 200) {
+        return HistorialModel.fromJson(response.data['data'][0]);
+      }
+      return null;
     } catch (e) {
       return null;
     }

@@ -2,7 +2,7 @@ import 'package:encuestas_utn/features/auth/domain/entities/entities.dart';
 
 //PARA EL MODELO 1
 
-Map<String, dynamic> generarReglasJsonModelo1({  
+Map<String, dynamic> generarReglasJsonModelo1({
   required List<PreguntaOpciones> preguntasConOpciones,
 }) {
   // Construimos las reglas para cada pregunta
@@ -16,14 +16,14 @@ Map<String, dynamic> generarReglasJsonModelo1({
       };
     });
   }).toList();
-  
+
   return {
     "Modelo": "Modelo1",
     "reglas_json": reglas,
   };
 }
 
-Map<String, dynamic> generarRespuestasModelo1Jso1n({
+List<Map<String, dynamic>> generarRespuestasModelo1Jso1n({
   required List<PreguntaOpciones> preguntasConOpciones,
 }) {
   // Construimos la lista de respuestas
@@ -39,11 +39,8 @@ Map<String, dynamic> generarRespuestasModelo1Jso1n({
     });
   }).toList();
 
-  return {
-    "respuestas": respuestas,
-  };
+  return respuestas;
 }
-
 
 //PARA EL MODELO 2
 Map<String, dynamic> generarReglasDinamicasJsonModelo2({
@@ -66,7 +63,7 @@ Map<String, dynamic> generarReglasDinamicasJsonModelo2({
         estilosMap[opcion.nombreEstilo]!.add(preguntaOpciones.pregunta.orden);
       }
     }
-  }  
+  }
   // Convertimos el mapa en la estructura JSON deseada
   final reglas = estilosMap.entries.map((entrada) {
     return {
@@ -81,8 +78,7 @@ Map<String, dynamic> generarReglasDinamicasJsonModelo2({
   };
 }
 
-
-Map<String, dynamic> generarRespuestasModelo2Json({
+List<Map<String, dynamic>> generarRespuestasModelo2Json({
   required List<PreguntaOpciones> preguntasConOpciones,
 }) {
   // Construimos la lista de respuestas
@@ -90,19 +86,15 @@ Map<String, dynamic> generarRespuestasModelo2Json({
     return preguntaOpciones.opciones.map((opcion) {
       return {
         "pregunta": preguntaOpciones.pregunta.orden,
-        "respuesta": opcion
-            .texto, // puede ser "Verdadero" o "Falso"
+        "respuesta": opcion.texto, // puede ser "Verdadero" o "Falso"
       };
     });
   }).toList();
 
-  return {
-    "respuestas": respuestas,
-  };
+  return respuestas;
 }
 
 //PARA EL MODELO 3
-
 
 Map<String, dynamic> generarReglasDinamicasJsonModelo3({
   required List<PreguntaOpciones> preguntasConOpciones,
@@ -140,8 +132,7 @@ Map<String, dynamic> generarReglasDinamicasJsonModelo3({
   };
 }
 
-
-Map<String, dynamic> generarRespuestasModelo3Json({
+List<Map<String, dynamic>> generarRespuestasModelo3Json({
   required List<PreguntaOpciones> preguntasConOpciones,
 }) {
   // Construimos la lista de respuestas
@@ -149,13 +140,10 @@ Map<String, dynamic> generarRespuestasModelo3Json({
     return preguntaOpciones.opciones.map((opcion) {
       return {
         "pregunta": preguntaOpciones.pregunta.orden,
-        "respuesta":
-            opcion.valorCualitativo, // el cual va ser "A" o "B"
+        "respuesta": opcion.valorCualitativo, // el cual va ser "A" o "B"
       };
     });
   }).toList();
 
-  return {
-    "respuestas": respuestas,
-  };
+  return respuestas;
 }

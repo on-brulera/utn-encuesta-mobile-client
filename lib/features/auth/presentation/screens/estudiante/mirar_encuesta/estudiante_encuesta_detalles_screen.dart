@@ -1,8 +1,10 @@
 import 'package:encuestas_utn/features/auth/domain/entities/entities.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/estudiante/encuesta_detalles_con_respuesta.dart';
+import 'package:encuestas_utn/features/auth/presentation/screens/estudiante/estadistica/estudiante_diagrama_asignacion_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:encuestas_utn/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class EstudianteEncuestaDetallesScreen extends ConsumerStatefulWidget {
@@ -69,6 +71,23 @@ class _EstudianteEncuestaDetallesScreenState
                       children: [
                         _buildInfoEncuestaCard(
                             encuestaDetallesState.detalles!.encuesta),
+                        const SizedBox(height: 15),
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                              onPressed: () {
+                                context.pushNamed(
+                                    EstudianteDiagramaAsignacionScreen
+                                        .screenName,
+                                    pathParameters: {
+                                      'idEncuesta':
+                                          widget.idEncuesta.toString(),
+                                      'idAsignacion':
+                                          widget.idAsignacion.toString()
+                                    });
+                              },
+                              child: const Text('Mirar Estadística')),
+                        ),
                         const SizedBox(height: 15),
                         _buildEstilosCard(
                             encuestaDetallesState.detalles!.estilos),

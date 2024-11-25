@@ -113,12 +113,32 @@ class DocenteRepositoryImpl implements DocenteRepository {
           return PreguntaOpciones(pregunta: pregunta, opciones: opciones);
         }).toList();
 
+        ReglasCalculo reglasCalculo =
+            ReglasCalculo(encuestaId: encuestaId, reglasJson: {});
+
+        try {
+          reglasCalculo = ReglasCalculoModel.fromJson(data['reglas'][0]);
+        } catch (e) {
+          reglasCalculo = ReglasCalculo(encuestaId: encuestaId, reglasJson: {});
+        }
+
         final estilos = (data['estilos'] as List)
             .map((estiloJson) => EstiloModel.fromJson(estiloJson))
             .toList();
 
+        String modelo = '';
+        try {
+          modelo = data['reglas'][0]['reglas_json']['Modelo'];
+        } catch (e) {
+          modelo = 'Sin modelo';
+        }
+
         return EncuestaDetalles(
-            encuesta: encuesta, preguntas: preguntas, estilos: estilos);
+            encuesta: encuesta,
+            reglasCalculo: reglasCalculo,
+            preguntas: preguntas,
+            estilos: estilos,
+            modelo: modelo);
       } else {
         return null;
       }
@@ -358,9 +378,10 @@ class DocenteRepositoryImpl implements DocenteRepository {
       return null;
     }
   }
-  
+
   @override
-  Future<ReglasCalculo?> crearReglaDeCalculo(ReglasCalculo regla, String token) async{
+  Future<ReglasCalculo?> crearReglaDeCalculo(
+      ReglasCalculo regla, String token) async {
     try {
       final response = await estilosAPI.post('/reglas',
           data: ReglasCalculoModel.toModel(regla).toJson(),

@@ -141,19 +141,29 @@ class _PreguntaWidgetState extends ConsumerState<PreguntaWidget> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                final nuevaOpcion = Opcion(
-                  id: DateTime.now()
-                      .millisecondsSinceEpoch, // Generar un ID único
-                  preguntaId: widget.preguntaOpciones.pregunta.id,
-                  estiloId: 0,
-                  texto: '',
-                  valorCualitativo: '',
-                  valorCuantitativo: 0.0,
-                );
-                disenarEncuestaNotifier.agregarOpcion(
-                  ordenPregunta: widget.preguntaOpciones.pregunta.orden,
-                  nuevaOpcion: nuevaOpcion,
-                );
+                final modeloSeleccionado =
+                    ref.read(disenarEncuestaProvider).modeloSeleccionado;
+
+                if (modeloSeleccionado == 'Modelo 2') {
+                  // Crear automáticamente opciones "Verdadero" y "Falso"
+                  disenarEncuestaNotifier.agregarOpcionesModelo2(
+                    ordenPregunta: widget.preguntaOpciones.pregunta.orden,
+                  );
+                } else {
+                  // Comportamiento estándar de agregar una opción vacía
+                  final nuevaOpcion = Opcion(
+                    id: DateTime.now().millisecondsSinceEpoch, // ID único
+                    preguntaId: widget.preguntaOpciones.pregunta.id,
+                    estiloId: 0,
+                    texto: '',
+                    valorCualitativo: '',
+                    valorCuantitativo: 0.0,
+                  );
+                  disenarEncuestaNotifier.agregarOpcion(
+                    ordenPregunta: widget.preguntaOpciones.pregunta.orden,
+                    nuevaOpcion: nuevaOpcion,
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlueAccent,

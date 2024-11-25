@@ -86,17 +86,23 @@ class ListaAsignacionDetalleNotifier
   }
 
   void filtrarAsignacionesPorCurso() {
-    final Set<int> idsUnicos = {};
+    final Set<String> combinacionesVistas = {};
     final List<AsignacionDetalles> cursosAsignaciones = [];
 
     for (final asignacion in state.asignaciones!) {
-      if (!idsUnicos.contains(asignacion.curId)) {
-        idsUnicos.add(asignacion.curId);
+      // Crear una combinación única basada en curId y matId
+      final combinacion = '${asignacion.curId}-${asignacion.matId}';
+
+      if (!combinacionesVistas.contains(combinacion)) {
+        combinacionesVistas.add(combinacion);
         cursosAsignaciones.add(asignacion);
       }
     }
+
+    // Actualizar el estado con las asignaciones filtradas
     state = state.copyWith(cursosAsignaciones: cursosAsignaciones);
   }
+
 
   void seleccionarCursoAsignadoByCursoId(
     int cursoId,

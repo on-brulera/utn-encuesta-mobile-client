@@ -293,6 +293,46 @@ class DisenarEncuestaNotifier extends StateNotifier<DisenarEncuestaState> {
       return false; // Si ocurrió un error
     }
   }
+  void agregarOpcionesModelo2({required int ordenPregunta}) {
+    final pregunta = state.preguntas.firstWhere(
+      (preguntaOpciones) => preguntaOpciones.pregunta.orden == ordenPregunta,
+    );
+
+    final opcionesModelo2 = [
+      Opcion(
+        id: DateTime.now().millisecondsSinceEpoch,
+        preguntaId: pregunta.pregunta.id,
+        estiloId: 0,
+        texto: 'Verdadero',
+        valorCualitativo: 'V',
+        valorCuantitativo: 1.0,
+        nombreEstilo: 'Sin estilo',
+      ),
+      Opcion(
+        id: DateTime.now().millisecondsSinceEpoch + 1,
+        preguntaId: pregunta.pregunta.id,
+        estiloId: 0,
+        texto: 'Falso',
+        valorCualitativo: 'F',
+        valorCuantitativo: 0.0,
+        nombreEstilo: 'Sin estilo',
+      ),
+    ];
+
+    final opcionesActualizadas = [
+      ...pregunta.opciones,
+      ...opcionesModelo2,
+    ];
+
+    final preguntaActualizada =
+        pregunta.copyWith(opciones: opcionesActualizadas);
+
+    state = state.copyWith(preguntas: [
+      for (final p in state.preguntas)
+        if (p.pregunta.orden == ordenPregunta) preguntaActualizada else p,
+    ]);
+  }
+
 
   void cargarDatosEncuesta(int idEncuesta) async {
     final EncuestaDetalles? encuestaActualizar =

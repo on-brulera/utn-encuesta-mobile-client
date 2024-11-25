@@ -17,4 +17,16 @@ abstract class EstudianteRepository {
       Respuesta respuesta, String token);
 
   Future<Asignacion?> marcarAsignacionTerminada(int idAsignacion, String token);
+
+  Future<bool> calificarTestcalificarTest(
+    String modelo,
+    Map<String, dynamic> reglasJson,
+    List<Map<String, dynamic>> respuestas,
+    int idAsignacion,
+    String cedulaEstudiante,
+    String token,
+  );
+
+  Future<Historial?> obtenerResultadoTestEstudianteByAsignacionId(
+      int idAsignacion, String token);
 }

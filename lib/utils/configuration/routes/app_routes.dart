@@ -155,5 +155,29 @@ final appRoutes = GoRouter(
         );
       },
     ),
+    GoRoute(
+      path:
+          '/${EstudianteDiagramaAsignacionScreen.screenName}/:idEncuesta/:idAsignacion',
+      name:
+          EstudianteDiagramaAsignacionScreen
+          .screenName, // Define un nombre único
+      builder: (context, state) {
+        final idEncuesta =
+            int.tryParse(state.pathParameters['idEncuesta'] ?? '');
+        final idAsignacion =
+            int.tryParse(state.pathParameters['idAsignacion'] ?? '');
+        if (idEncuesta == null && idAsignacion == null) {
+          return const Scaffold(
+            body: Center(
+              child: Text('ID de encuesta y asignación no válido'),
+            ),
+          );
+        }
+        return EstudianteDiagramaAsignacionScreen(
+          idEncuesta: idEncuesta!,
+          idAsignacion: idAsignacion!,
+        );
+      },
+    ),
   ],
 );

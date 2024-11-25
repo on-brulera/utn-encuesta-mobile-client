@@ -1,6 +1,7 @@
 import 'package:encuestas_utn/features/auth/domain/repositories/estudiante_repository.dart';
 import 'package:encuestas_utn/features/auth/infraestructure/repositories/estudiante_repository_impl.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/shared/session_provider.dart';
+import 'package:encuestas_utn/utils/modelos_to_json.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/entities.dart';
 import 'package:encuestas_utn/features/auth/infraestructure/repositories/docente_repository_impl.dart';
@@ -46,10 +47,12 @@ class EncuestaDetallesConRespuestaNotifier
   final DocenteRepositoryImpl docenteRepository;
   final EstudianteRepository estudianteRepository;
   final String token;
+  final String cedula;
 
   EncuestaDetallesConRespuestaNotifier(
       {required this.docenteRepository,
       required this.token,
+      required this.cedula,
       required this.estudianteRepository})
       : super(EncuestaDetallesConRespuestaState());
 
@@ -86,6 +89,30 @@ class EncuestaDetallesConRespuestaNotifier
             respuesta, token);
       }).toList();
       await estudianteRepository.marcarAsignacionTerminada(idAsignacion, token);
+
+      List<PreguntaOpciones> listaJson = prepararListaParaJson();
+      List<Map<String, dynamic>> jsonRespuestasEstudiante = [];
+      if (state.detalles!.modelo == 'Modelo1') {
+        jsonRespuestasEstudiante =
+            generarRespuestasModelo1Jso1n(preguntasConOpciones: listaJson);
+      }
+      if (state.detalles!.modelo == 'Modelo2') {
+        jsonRespuestasEstudiante =
+            generarRespuestasModelo2Json(preguntasConOpciones: listaJson);
+      }
+      if (state.detalles!.modelo == 'Modelo3') {
+        jsonRespuestasEstudiante =
+            generarRespuestasModelo3Json(preguntasConOpciones: listaJson);
+      }
+
+      await estudianteRepository.calificarTestcalificarTest(
+          state.detalles!.modelo!,
+          state.detalles!.reglasCalculo!.reglasJson,
+          jsonRespuestasEstudiante,
+          idAsignacion,
+          cedula,
+          token);
+
       if (respuestas.isNotEmpty) {
         state = state.copyWith(respuestasEstudiante: [], isSubmitting: false);
       } else {
@@ -98,6 +125,23 @@ class EncuestaDetallesConRespuestaNotifier
           error: 'Error al enviar los respuestas de la encuesta: $e',
           isSubmitting: false);
     }
+  }
+
+  List<PreguntaOpciones> prepararListaParaJson() {
+    List<PreguntaOpciones> preguntasJson = [];
+
+    for (PreguntaOpciones preguntaOpcion in state.detalles!.preguntas) {
+      List<Opcion> opciones = [];
+      for (Respuesta respuesta in state.respuestasEstudiante!) {
+        if (preguntaOpcion.pregunta.id == respuesta.preguntaId) {
+          opciones.add(preguntaOpcion.opciones
+              .where((opc) => opc.preguntaId == respuesta.preguntaId)
+              .first);
+        }
+      }
+      preguntasJson.add(preguntaOpcion.copyWith(opciones: opciones));
+    }
+    return preguntasJson;
   }
 
   void cargarNuevaEncuesta(int idEncuesta, int idAsignacion) {
@@ -128,8 +172,8 @@ final encuestaDetallesConRespuestaProvider = StateNotifierProvider<
     EncuestaDetallesConRespuestaState>((ref) {
   final session = ref.watch(sessionProvider);
   return EncuestaDetallesConRespuestaNotifier(
-    docenteRepository: DocenteRepositoryImpl(),
-    estudianteRepository: EstudianteRepositoryImpl(),
-    token: session.token,
-  );
+      docenteRepository: DocenteRepositoryImpl(),
+      estudianteRepository: EstudianteRepositoryImpl(),
+      token: session.token,
+      cedula: session.user!.cedula);
 });

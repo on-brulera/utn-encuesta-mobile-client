@@ -15,9 +15,9 @@ class HistorialModel extends Historial {
       cursoId: json['cur_id'],
       asignacionId: json['asi_id'],
       estudianteCedula: json['est_cedula'],
-      resultadoEncuesta: json['his_resultado_encuesta'],
-      notaEstudiante: json['his_nota_estudiante'],
-      fechaEncuesta: json['his_fecha_encuesta']);
+      resultadoEncuesta: json['his_resultado_encuesta'] ?? 'Sin resultado',
+      notaEstudiante: json['his_nota_estudiante'] ?? 'Sin nota',
+      fechaEncuesta: DateTime.parse(json['his_fecha_encuesta']));
 
   Map<String, dynamic> toJson() {
     return {
