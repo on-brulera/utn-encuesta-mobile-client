@@ -58,4 +58,17 @@ abstract class DocenteRepository {
 
   //PARA LA CREACIÓN DE REGLAS DE CALCULO
   Future<ReglasCalculo?> crearReglaDeCalculo(ReglasCalculo regla, String token);
+
+  //PARA LOS CURSOS Y SUS RESULTADOS: NOTAS Y ESTILOS
+
+  Future<List<EstudianteResultado>?> obtenerResultadoEstudiantesCurso(
+      int cursoId, int materiaId, int parcialId, int encuestaId, String token);
+
+  //PARA EL CHAT CON LA IA
+  Future<Mensaje?> iniciarChat(String cedula, bool esEstudiante);
+
+  Future<Mensaje?> enviarMensajeChat(
+      String cedula, String mensaje, bool esEstudiante);
+
+  Future<Mensaje?> analizarResultado(String datos, String mensaje);
 }

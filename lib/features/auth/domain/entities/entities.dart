@@ -1,6 +1,6 @@
 
+export 'package:encuestas_utn/features/auth/domain/entities/estudiante_resultado.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/asignacion_detalles.dart';
-
 export 'package:encuestas_utn/features/auth/domain/entities/rol.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/respuesta.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/prompt.dart';

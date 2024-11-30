@@ -9,6 +9,7 @@ class Encuesta {
   //atributo para pocos,
   final int idAsignacion;
   final String fechaLimite;
+  final bool respondido;
 
   Encuesta({
     this.id = 0,
@@ -18,7 +19,8 @@ class Encuesta {
     this.cuantitativa = false,
     required this.fechaCreacion,
     this.idAsignacion = 0,
-    this.fechaLimite ='',
+    this.fechaLimite = '',
+    this.respondido = false
   });
 
   Encuesta copyWith({
@@ -30,6 +32,7 @@ class Encuesta {
     DateTime? fechaCreacion,
     int? idAsignacion,
     String? fechaLimite,
+    bool? respondido,
   }) {
     return Encuesta(
         id: id ?? this.id,
@@ -38,8 +41,8 @@ class Encuesta {
         descripcion: descripcion ?? this.descripcion,
         cuantitativa: cuantitativa ?? this.cuantitativa,
         fechaCreacion: fechaCreacion ?? this.fechaCreacion,
-        idAsignacion: idAsignacion?? this.idAsignacion,
-        fechaLimite: fechaLimite??this.fechaLimite);
-        
+        idAsignacion: idAsignacion ?? this.idAsignacion,
+        fechaLimite: fechaLimite ?? this.fechaLimite,
+        respondido: respondido??this.respondido);
   }
 }

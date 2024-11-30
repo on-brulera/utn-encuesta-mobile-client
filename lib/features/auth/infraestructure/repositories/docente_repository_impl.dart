@@ -395,4 +395,78 @@ class DocenteRepositoryImpl implements DocenteRepository {
       return null;
     }
   }
+
+  @override
+  Future<List<EstudianteResultado>?> obtenerResultadoEstudiantesCurso(
+      int cursoId, int materiaId, int parcialId, int encuestaId,String token) async {
+    try {
+      final Map<String, dynamic> jsonData = {
+        "cur_id": cursoId,
+        "mat_id": materiaId,
+        "par_id": parcialId,
+        "enc_id": encuestaId,
+      };
+
+      final response = await estilosAPI.post(
+        '/historial/curso/materia/encuesta',
+        data: jsonData,
+        options: addToken(token),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> respuestasJson = response.data['data'];
+        final List<EstudianteResultado> respuestas = respuestasJson
+            .map((resultado) => EstudianteResultado.fromJson(resultado))
+            .toList();
+        return respuestas;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<Mensaje?> iniciarChat(String cedula, bool esEstudiante) async {
+    try {
+      final response = await estilosAPI.post('/chat', data: {'cedula': cedula, "esEstudiante": esEstudiante});
+      if (response.statusCode == 200) {
+        return Mensaje.fromJson(response.data);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<Mensaje?> enviarMensajeChat(String cedula, String mensaje, bool esEstudiante) async {
+    try {
+      final response = await estilosAPI
+          .post('/mensaje', data: {'cedula': cedula, "mensaje": mensaje, "esEstudiante": esEstudiante});
+      if (response.statusCode == 200) {
+        return Mensaje.fromJsonRespuesta(response.data);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  @override
+  Future<Mensaje?> analizarResultado(String datos, String mensaje) async{
+    try {
+      final response = await estilosAPI
+          .post('/interpretacion/encuesta', data: {'texto_datos': datos, "mensaje": mensaje});
+      if (response.statusCode == 200) {
+        return Mensaje.fromJsonRespuesta(response.data);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

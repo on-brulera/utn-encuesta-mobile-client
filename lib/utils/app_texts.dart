@@ -58,6 +58,9 @@ class AppTexts {
         ),
       );
 
+  static diagrama(String titulo) =>
+      Text(titulo, style: const TextStyle(fontWeight: FontWeight.bold));
+
   static Widget fechaEncuesta(String fechaISO) {
     final DateTime now = DateTime.now();
 

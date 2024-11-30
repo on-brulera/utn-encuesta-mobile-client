@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/mensaje.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/estudiante/estudiante_asignaciones_provider.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/shared/mensaje_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
 import 'package:encuestas_utn/utils/configuration/const/menu_opcion.dart';
@@ -22,9 +23,9 @@ class EstudianteMenuDScreen extends ConsumerWidget {
         () => context.pushNamed(EstudianteMirarEncuestaScreen.screenName);
     opcionesMenuEstudiante[1].callback =
         () => context.pushNamed(EstudianteCursoScreen.screenName);
+    // opcionesMenuEstudiante[2].callback =
+    //     () => context.pushNamed(EstudianteEstadisticaScreen.screenName);
     opcionesMenuEstudiante[2].callback =
-        () => context.pushNamed(EstudianteEstadisticaScreen.screenName);
-    opcionesMenuEstudiante[3].callback =
         () => context.pushNamed(EstudiantePerfilScreen.screenName);
 
     List<Notificacion> notificaciones = [
@@ -39,8 +40,27 @@ class EstudianteMenuDScreen extends ConsumerWidget {
           callback: () {}),
       Notificacion(
           texto: 'Habla con IA sobre tu estilo de aprendizaje',
-          callback: () => context.pushNamed(ChatScreen.screenName,
-              extra: UsuarioChat.estudiante)),
+          callback: () async{
+          try {
+            // Esperar a que la operación asíncrona se complete
+            await ref.read(mensajeProvider.notifier).iniciarChat(UsuarioChat.estudiante);
+
+            // Verificar que el contexto sigue montado antes de navegar
+            if (context.mounted) {
+              context.pushNamed(
+                ChatScreen.screenName,
+                extra: UsuarioChat.estudiante,
+              );
+            }
+          } catch (e) {
+            // Manejar errores si ocurren durante la operación asíncrona
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error al iniciar el chat: $e')),
+              );
+            }
+          }
+        },),
     ];
 
     return Scaffold(

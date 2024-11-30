@@ -14,9 +14,12 @@ class CustomIaMessage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Mensaje de texto
         Container(
           decoration: BoxDecoration(
-              color: colors.secondary, borderRadius: BorderRadius.circular(20)),
+            color: colors.secondary,
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
@@ -25,15 +28,13 @@ class CustomIaMessage extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        _ImageBubble(
-          imageUrl: imageUrl,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
+
+        // Imagen solo si imageUrl no está vacío
+        if (imageUrl.isNotEmpty) ...[
+          _ImageBubble(imageUrl: imageUrl),
+          const SizedBox(height: 10),
+        ],
       ],
     );
   }

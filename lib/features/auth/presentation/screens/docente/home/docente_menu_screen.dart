@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/disenar_encuesta_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_asignacion_detalle_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_encuesta_provider.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/shared/mensaje_provider.dart';
 import 'package:encuestas_utn/utils/configuration/const/menu_opcion.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/mensaje.dart';
 import 'package:encuestas_utn/features/auth/presentation/screens/screens.dart';
@@ -45,7 +46,7 @@ class DocenteMenuDScreen extends ConsumerWidget {
           !listaCursoAsignacionState.isLoading) {
         listaCursoAsignacionNotifier.obtenerTodasLasAsignaciones();
       }
-    });    
+    });
 
     //ITEMS PARA LOS MODULOS
 
@@ -55,9 +56,9 @@ class DocenteMenuDScreen extends ConsumerWidget {
     };
     opcionesMenuDocente[1].callback =
         () => context.pushNamed(DocenteCursoAsignacionScreen.screenName);
+    // opcionesMenuDocente[2].callback =
+    //     () => context.pushNamed(DocenteEstadisticaScreen.screenName);
     opcionesMenuDocente[2].callback =
-        () => context.pushNamed(DocenteEstadisticaScreen.screenName);
-    opcionesMenuDocente[3].callback =
         () => context.pushNamed(DocentePerfilScreen.screenName);
 
     List<Notificacion> notificaciones = [
@@ -70,9 +71,29 @@ class DocenteMenuDScreen extends ConsumerWidget {
           callback: () =>
               context.pushNamed(DocenteListaCursoScreen.screenName)),
       Notificacion(
-          texto: 'Habla con IA sobre los estilos de aprendizaje',
-          callback: () => context.pushNamed(ChatScreen.screenName,
-              extra: UsuarioChat.docente)),
+        texto: 'Habla con IA sobre los estilos de aprendizaje',
+        callback: () async {
+          try {
+            // Esperar a que la operación asíncrona se complete
+            await ref.read(mensajeProvider.notifier).iniciarChat(UsuarioChat.docente);
+
+            // Verificar que el contexto sigue montado antes de navegar
+            if (context.mounted) {
+              context.pushNamed(
+                ChatScreen.screenName,
+                extra: UsuarioChat.docente,
+              );
+            }
+          } catch (e) {
+            // Manejar errores si ocurren durante la operación asíncrona
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error al iniciar el chat: $e')),
+              );
+            }
+          }
+        },
+      ),
     ];
 
     return Scaffold(

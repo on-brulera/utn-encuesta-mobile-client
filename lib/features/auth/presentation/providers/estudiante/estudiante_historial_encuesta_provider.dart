@@ -46,18 +46,10 @@ class EstudianteHistorialNotifier
       final historial = await estudianteRepository
           .obtenerResultadoTestEstudianteByAsignacionId(idAsignacion, token);
 
-      // Manejo de respuesta vacía
-      if (historial != null) {
+      if (historial != null && historial.notaEstudiante.isNotEmpty) {
         state = state.copyWith(historial: historial, isLoading: false);
       } else {
         state = state.copyWith(
-          historial: Historial(
-              cursoId: 0,
-              asignacionId: 0,
-              estudianteCedula: '',
-              resultadoEncuesta: '0',
-              notaEstudiante: '0',
-              fechaEncuesta: DateTime.now()),
           isLoading: false,
           error: 'No se encontró el historial.',
         );
@@ -69,6 +61,7 @@ class EstudianteHistorialNotifier
       );
     }
   }
+
 }
 
 final estudianteHistorialProvider = StateNotifierProvider<

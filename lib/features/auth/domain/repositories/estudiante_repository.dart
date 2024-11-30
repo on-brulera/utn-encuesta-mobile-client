@@ -29,4 +29,5 @@ abstract class EstudianteRepository {
 
   Future<Historial?> obtenerResultadoTestEstudianteByAsignacionId(
       int idAsignacion, String token);
+  
 }

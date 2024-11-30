@@ -88,7 +88,7 @@ class EstudianteAsignacionesNotifier
       Encuesta encuesta = state.encuestas!
           .where((encuesta) => encuesta.id == asignacion.encuestaId)
           .first;
-      encuestasActualizadas.add(encuesta.copyWith(idAsignacion: asignacion.id, fechaLimite: asignacion.fechaCompletado.toIso8601String()));
+      encuestasActualizadas.add(encuesta.copyWith(idAsignacion: asignacion.id, fechaLimite: asignacion.fechaCompletado.toIso8601String(), respondido: asignacion.realizado));
     }
     state = state.copyWith(encuestasAsignadas: encuestasActualizadas);
   }
@@ -108,7 +108,8 @@ class EstudianteAsignacionesNotifier
         if (encuestasFiltradas.isNotEmpty) {
           encuestasActualizadas.add(encuestasFiltradas.first.copyWith(
               idAsignacion: asignacion.id,
-              fechaLimite: asignacion.fechaCompletado.toIso8601String()));
+              fechaLimite: asignacion.fechaCompletado.toIso8601String(),
+              respondido: asignacion.realizado));
         }
       }
     }

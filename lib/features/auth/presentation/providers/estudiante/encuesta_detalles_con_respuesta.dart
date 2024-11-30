@@ -135,7 +135,9 @@ class EncuestaDetallesConRespuestaNotifier
       for (Respuesta respuesta in state.respuestasEstudiante!) {
         if (preguntaOpcion.pregunta.id == respuesta.preguntaId) {
           opciones.add(preguntaOpcion.opciones
-              .where((opc) => opc.preguntaId == respuesta.preguntaId)
+              .where((opc) =>
+                  opc.preguntaId == respuesta.preguntaId &&
+                  opc.id == respuesta.opcionId)
               .first);
         }
       }

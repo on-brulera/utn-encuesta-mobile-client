@@ -69,7 +69,7 @@ class CustomMirarEncuestaCard extends StatelessWidget {
                     AppSpaces.vertical20,
                     Flexible(
                       child: Text(
-                        encuesta.descripcion,
+                        encuesta.respondido?"Respondido":"No Respondido",
                         style: const TextStyle(
                           color: Colors.black54,
                           fontSize: 13,

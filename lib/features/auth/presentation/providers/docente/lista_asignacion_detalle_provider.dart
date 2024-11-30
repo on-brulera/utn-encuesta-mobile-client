@@ -15,6 +15,8 @@ class ListaAsignacionDetalleState {
   final bool hasLoaded;
   //PARA LA LISTA DE ESTUDIANTES
   final List<Estudiante>? estudiantes;
+  //PARA LOS RESULTADOS DE NOTAS Y ESTILOS
+  final List<EstudianteResultado>? resultados;
 
   ListaAsignacionDetalleState(
       {this.asignaciones = const [],
@@ -24,7 +26,8 @@ class ListaAsignacionDetalleState {
       this.cursoAsignacionSelected,
       this.encuestasCursoAsignacionSelected,
       this.hasLoaded = false,
-      this.estudiantes});
+      this.estudiantes,
+      this.resultados = const []});
 
   ListaAsignacionDetalleState copyWith(
       {List<AsignacionDetalles>? asignaciones,
@@ -34,7 +37,8 @@ class ListaAsignacionDetalleState {
       AsignacionDetalles? cursoAsignacionSelected,
       List<AsignacionDetalles>? encuestasCursoAsignacionSelected,
       bool? hasLoaded,
-      List<Estudiante>? estudiantes}) {
+      List<Estudiante>? estudiantes,
+      List<EstudianteResultado>? resultados}) {
     return ListaAsignacionDetalleState(
         asignaciones: asignaciones ?? this.asignaciones,
         isLoading: isLoading ?? this.isLoading,
@@ -45,7 +49,8 @@ class ListaAsignacionDetalleState {
         encuestasCursoAsignacionSelected: encuestasCursoAsignacionSelected ??
             this.encuestasCursoAsignacionSelected,
         hasLoaded: hasLoaded ?? this.hasLoaded,
-        estudiantes: estudiantes ?? this.estudiantes);
+        estudiantes: estudiantes ?? this.estudiantes,
+        resultados: resultados ?? this.resultados);
   }
 }
 
@@ -103,7 +108,6 @@ class ListaAsignacionDetalleNotifier
     state = state.copyWith(cursosAsignaciones: cursosAsignaciones);
   }
 
-
   void seleccionarCursoAsignadoByCursoId(
     int cursoId,
     int materiaId,
@@ -123,9 +127,24 @@ class ListaAsignacionDetalleNotifier
     state = state.copyWith(
         encuestasCursoAsignacionSelected: encuestasCursoAsignacionSelected);
 
+    //PARA LOS RESLTADOS
     List<Estudiante>? estudiantes = await docenteRepository
         .obtenerEstudiantesByCursoIdMateriaId(cursoId, materiaId, token);
     state = state.copyWith(estudiantes: estudiantes);
+
+    List<EstudianteResultado>? resultado = await docenteRepository
+        .obtenerResultadoEstudiantesCurso(cursoId, materiaId, 1, encuestasCursoAsignacionSelected[0].encId,token);
+    state = state.copyWith(resultados: resultado);
+  }
+
+  Future<List<EstudianteResultado>?> obtenerResultadoEstudiantePorCurso(
+    int cursoId,
+    int materiaId,
+    int parcialId,
+    int encuestaId
+  ) async {
+    return await docenteRepository.obtenerResultadoEstudiantesCurso(
+        cursoId, materiaId, parcialId, encuestaId ,token);
   }
 }
 
