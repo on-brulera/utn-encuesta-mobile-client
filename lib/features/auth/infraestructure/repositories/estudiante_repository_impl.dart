@@ -157,4 +157,27 @@ class EstudianteRepositoryImpl implements EstudianteRepository {
       return null;
     }
   }
+
+  @override
+  Future<List<Materia>?> obtenerMateriasPorCurso(
+      int idCurso, String token) async {
+    try {
+      final Map<String, dynamic> jsonData = {
+        "cur_id": idCurso,
+      };
+
+      final response = await estilosAPI.post(
+        '/materia/estudiantes',
+        data: jsonData,
+        options: addToken(token),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> listaJson = response.data['data'];
+        return listaJson.map((json) => MateriaModel.fromJson(json)).toList();
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
 }

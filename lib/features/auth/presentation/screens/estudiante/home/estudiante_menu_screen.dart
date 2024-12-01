@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:encuestas_utn/features/auth/domain/entities/encuesta.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/mensaje.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/estudiante/estudiante_asignaciones_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/shared/mensaje_provider.dart';
@@ -36,14 +37,47 @@ class EstudianteMenuDScreen extends ConsumerWidget {
             context.pushNamed(EstudianteEncuestasResponder.screenName);
           }),
       Notificacion(
-          texto: 'Mire las estadísticas de la última encuesta ',
-          callback: () {}),
+        texto: 'Mire las estadísticas de la última asignación respondida',
+        callback: () async {
+          // Obtener la última encuesta respondida
+          Encuesta? encuesta = await ref
+              .read(estudianteAsignacionProvider.notifier)
+              .obtenerUltimaEncuestaRespondida();
+
+          if (context.mounted) {
+            if (encuesta == null) {
+              // Mostrar un SnackBar si no hay encuesta
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    'No has contestado la última asignación.',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 3),
+                ),
+              );
+            } else {
+              // Redirigir a la página de detalles con los parámetros correspondientes
+              context.pushNamed(
+                EstudianteEncuestaDetallesScreen.screenName,
+                pathParameters: {
+                  'idEncuesta': encuesta.id.toString(),
+                  'idAsignacion': encuesta.idAsignacion.toString(),
+                },
+              );
+            }
+          }
+        },
+      ),
       Notificacion(
-          texto: 'Habla con IA sobre tu estilo de aprendizaje',
-          callback: () async{
+        texto: 'Habla con IA sobre tu estilo de aprendizaje',
+        callback: () async {
           try {
             // Esperar a que la operación asíncrona se complete
-            await ref.read(mensajeProvider.notifier).iniciarChat(UsuarioChat.estudiante);
+            await ref
+                .read(mensajeProvider.notifier)
+                .iniciarChat(UsuarioChat.estudiante);
 
             // Verificar que el contexto sigue montado antes de navegar
             if (context.mounted) {
@@ -60,7 +94,8 @@ class EstudianteMenuDScreen extends ConsumerWidget {
               );
             }
           }
-        },),
+        },
+      ),
     ];
 
     return Scaffold(

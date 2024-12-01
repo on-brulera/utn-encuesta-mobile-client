@@ -6,7 +6,7 @@ class Encuesta {
   final bool cuantitativa;
   final DateTime fechaCreacion;
 
-  //atributo para pocos,
+  //atributo para estudiantes,
   final int idAsignacion;
   final String fechaLimite;
   final bool respondido;

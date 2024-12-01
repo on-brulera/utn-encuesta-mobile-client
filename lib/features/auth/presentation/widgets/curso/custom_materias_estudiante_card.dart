@@ -1,24 +1,24 @@
-import 'package:encuestas_utn/features/auth/domain/entities/curso.dart';
+import 'package:encuestas_utn/features/auth/domain/entities/materia.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/estudiante/estudiante_cursos_provider.dart';
-import 'package:encuestas_utn/features/auth/presentation/screens/estudiante/curso/estudiante_asignatura_screen.dart';
+import 'package:encuestas_utn/features/auth/presentation/screens/estudiante/mirar_encuesta/estudiante_mirar_encuesta__cursoscreen.dart';
 import 'package:encuestas_utn/utils/app_spaces.dart';
 import 'package:encuestas_utn/utils/app_texts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class CustomMirarCursoEstudianteCard extends ConsumerWidget {
-  final Curso curso;
+class CustomMateriasEstudianteCard extends ConsumerWidget {
+  final Materia materia;
 
-  const CustomMirarCursoEstudianteCard({super.key, required this.curso});
+  const CustomMateriasEstudianteCard({super.key, required this.materia});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () async {
-        await ref.read(estudianteCursosProvider.notifier).selectCurso(curso);
+        await ref.read(estudianteCursosProvider.notifier).filtrarEncuestasByMateria(materia.id);
         if (context.mounted) {
-          context.pushNamed(EstudianteAsignaturaScreen.screenName);
+          context.pushNamed(EstudianteMirarEncuestaCursoScreen.screenName);
         } else {
           const Scaffold(body: Center(child: CircularProgressIndicator(),),);
         }
@@ -50,7 +50,7 @@ class CustomMirarCursoEstudianteCard extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
-                          child: AppTexts.textNotification('Curso'),
+                          child: AppTexts.textNotification('Asignatura'),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(right: 10),
@@ -65,7 +65,7 @@ class CustomMirarCursoEstudianteCard extends ConsumerWidget {
                     AppSpaces.vertical15,
                     Flexible(
                       child: Text(
-                        curso.carrera,
+                        materia.nombre,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                         style:
@@ -73,9 +73,8 @@ class CustomMirarCursoEstudianteCard extends ConsumerWidget {
                       ),
                     ),
                     AppSpaces.vertical10,
-                    AppTexts.commentNotification('Semestre ${curso.nivel}'),
-                    AppSpaces.vertical20,
-                    AppTexts.fechaCurso(curso.periodoAcademico),
+                    AppTexts.commentNotification(materia.descripcion),
+                    AppSpaces.vertical20,                    
                   ],
                 ),
               ),

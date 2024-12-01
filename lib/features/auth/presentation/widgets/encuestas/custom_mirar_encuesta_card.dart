@@ -13,7 +13,9 @@ class CustomMirarEncuestaCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.pushNamed(EstudianteEncuestaDetallesScreen.screenName,
-            pathParameters: {'idEncuesta': encuesta.id.toString(), 'idAsignacion': encuesta.idAsignacion.toString()
+            pathParameters: {
+              'idEncuesta': encuesta.id.toString(),
+              'idAsignacion': encuesta.idAsignacion.toString()
             });
       },
       child: Container(
@@ -68,16 +70,27 @@ class CustomMirarEncuestaCard extends StatelessWidget {
                     ),
                     AppSpaces.vertical20,
                     Flexible(
-                      child: Text(
-                        encuesta.respondido?"Respondido":"No Respondido",
-                        style: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: encuesta.respondido
+                              ? const Color.fromARGB(255, 210, 244, 211)
+                              : const Color.fromARGB(255, 253, 213, 217),
+                          borderRadius:
+                              BorderRadius.circular(20), // Bordes redondeados
                         ),
-                        overflow: TextOverflow
-                            .ellipsis, // Trunca el texto si es muy largo
-                        maxLines: 3, // Limita el texto a 2 líneas
+                        child: Text(
+                          encuesta.respondido ? "Respondido" : "No Respondido",
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          overflow: TextOverflow
+                              .ellipsis, // Trunca el texto si es muy largo
+                          maxLines: 3, // Limita el texto a 3 líneas
+                        ),
                       ),
                     ),
                     AppSpaces.vertical10,

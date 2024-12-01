@@ -29,5 +29,6 @@ abstract class EstudianteRepository {
 
   Future<Historial?> obtenerResultadoTestEstudianteByAsignacionId(
       int idAsignacion, String token);
-  
+
+  Future<List<Materia>?> obtenerMateriasPorCurso(int idCurso, String token);
 }

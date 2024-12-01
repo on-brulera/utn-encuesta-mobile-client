@@ -88,7 +88,10 @@ class EstudianteAsignacionesNotifier
       Encuesta encuesta = state.encuestas!
           .where((encuesta) => encuesta.id == asignacion.encuestaId)
           .first;
-      encuestasActualizadas.add(encuesta.copyWith(idAsignacion: asignacion.id, fechaLimite: asignacion.fechaCompletado.toIso8601String(), respondido: asignacion.realizado));
+      encuestasActualizadas.add(encuesta.copyWith(
+          idAsignacion: asignacion.id,
+          fechaLimite: asignacion.fechaCompletado.toIso8601String(),
+          respondido: asignacion.realizado));
     }
     state = state.copyWith(encuestasAsignadas: encuestasActualizadas);
   }
@@ -114,6 +117,32 @@ class EstudianteAsignacionesNotifier
       }
     }
     state = state.copyWith(encuestasPorResponder: encuestasActualizadas);
+  }
+
+  Future<Encuesta?> obtenerUltimaEncuestaRespondida() async {
+    List<Asignacion> asignaciones = state.asignaciones ?? [];
+
+    // Filtrar asignaciones respondidas
+    List<Asignacion> asignacionesRespondidas =
+        asignaciones.where((asi) => asi.realizado == true).toList();
+
+    if (asignacionesRespondidas.isEmpty) {
+      return null;
+    }
+
+    // Encontrar la asignación respondida con el mayor ID
+    int idmayorAsignacion = 0;
+    int idEncuesta = 0;
+    for (Asignacion asignacion in asignacionesRespondidas) {
+      if (asignacion.id > idmayorAsignacion) {
+        idmayorAsignacion = asignacion.id;
+        idEncuesta = asignacion.encuestaId;
+      }
+    }
+
+    List<Encuesta> encuestas = state.encuestas ?? [];
+    Encuesta encuesta = encuestas.where((enc) => enc.id == idEncuesta).first;
+    return encuesta.copyWith(idAsignacion: idmayorAsignacion);
   }
 }
 

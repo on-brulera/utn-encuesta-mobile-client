@@ -179,5 +179,15 @@ final appRoutes = GoRouter(
         );
       },
     ),
+    GoRoute(
+      path: '/${EstudianteAsignaturaScreen.screenName}',
+      name: EstudianteAsignaturaScreen.screenName,
+      builder: (context, state) => const EstudianteAsignaturaScreen(),
+    ),
+    GoRoute(
+      path: '/${EstudianteMirarEncuestaCursoScreen.screenName}',
+      name: EstudianteMirarEncuestaCursoScreen.screenName,
+      builder: (context, state) => const EstudianteMirarEncuestaCursoScreen(),
+    ),
   ],
 );
