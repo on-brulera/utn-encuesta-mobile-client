@@ -13,7 +13,7 @@ App for UTN students and professors
 1. Clone this repository
 
 ```bash
-git clone https://github.com/on-brulera/encuesta-estilos-mobile-app.git
+git clone https://github.com/on-brulera/utn-encuesta-mobile-client
 ```
 2. Copy .env-template and to the copy rename to .env and configurated your variables
 
