@@ -1,13 +1,12 @@
 import 'dart:convert';
-
 import 'package:encuestas_utn/features/auth/domain/entities/asignacion_detalles.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/estudiante.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/estudiante_resultado.dart';
-import 'package:encuestas_utn/features/auth/presentation/providers/docente/interpretacion_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_asignacion_detalle_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/area_predominant_styles_chart.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/estudiantes_dynamic_table.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/predominant_styles_chart.dart';
+import 'package:encuestas_utn/features/auth/presentation/widgets/shared/respuesta_encuesta_table.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/resultado_encuesta_bar_chart.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/resultado_encuesta_scatter_chart.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/styles_vs_average_chart.dart';
@@ -160,45 +159,6 @@ class _DocenteEncuestaDetallesScreenState
     );
   }
 
-  Widget _buildInterpretacionButton(String titulo,
-      {required String datos, required String mensaje}) {
-    final interpretacionState = ref.watch(interpretacionProvider);
-
-    if (interpretacionState.isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (interpretacionState.hasError) {
-      return Center(
-        child: Text(
-          "Error al cargar la interpretación: ${interpretacionState.error}",
-          style:
-              const TextStyle(color: Colors.red, fontWeight: FontWeight.w300),
-        ),
-      );
-    }
-
-    final respuesta = interpretacionState.value;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(titulo, style: const TextStyle(fontWeight: FontWeight.w400)),
-        const SizedBox(height: 10),
-        respuesta != null
-            ? Text(respuesta.text,
-                style: const TextStyle(
-                    color: Colors.black87, fontWeight: FontWeight.w300))
-            : OutlinedButton(
-                onPressed: () => ref
-                    .read(interpretacionProvider.notifier)
-                    .cargarInterpretacion(datos, mensaje),
-                child: const Text("Cargar Interpretación"),
-              ),
-      ],
-    );
-  }
-
   Widget _buildExpansionTiles(
       List<AsignacionDetalles> asignaciones, List<Estudiante>? estudiantes) {
     return Container(
@@ -218,9 +178,14 @@ class _DocenteEncuestaDetallesScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppTexts.numberNotification('Encuestas Asignadas'),
+          AppTexts.numberNotification('ENCUESTAS ASIGNADAS'),
           const Divider(thickness: 1),
-          ...asignaciones.map((asignacion) {
+          ...asignaciones.asMap().entries.map((entry) {
+            final index = entry.key;
+            final asignacion = entry.value;
+            final uniqueId =
+                "asignacion_${index}_${asignacion.encTitulo}_${asignacion.parId}";
+
             return ExpansionTile(
               title: AppTexts.softText(asignacion.encTitulo),
               subtitle:
@@ -229,6 +194,7 @@ class _DocenteEncuestaDetallesScreenState
               children: [
                 const SizedBox(height: 20),
                 FutureBuilder<List<EstudianteResultado>?>(
+                  // Reemplaza FutureBuilder
                   future: _getResultadosPorAsignacion(asignacion),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -244,102 +210,92 @@ class _DocenteEncuestaDetallesScreenState
                       return const Text("No hay datos disponibles.");
                     }
 
-                    // Datos cargados correctamente
                     final resultados = snapshot.data!;
-
-                    // Verificar si al menos uno tiene un formato válido
                     final tieneFormatoValido = resultados.any((resultado) =>
                         isValidStructure(resultado.hisResultadoEncuesta));
 
                     if (tieneFormatoValido) {
-                      // Mostrar los diagramas basados en la clase que hicimos
                       return Column(
                         children: [
+                          AppTexts.diagrama(
+                              'Total de respuestas de estudiantes'),
                           const SizedBox(height: 30),
+                          RespuestaEncuestaTable(
+                            respondieronEncuesta: resultados.length,
+                            totalEstudiantes: estudiantes!.length,
+                            noRespondieron:
+                                estudiantes.length - resultados.length,
+                          ),
+                          const SizedBox(height: 50),
                           AppTexts.diagrama(
                               'Gráfico de Barras - Sub Estilo Más Predominante'),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 30),
                           PredominantStylesChart(
+                            id: '$uniqueId sisi',
+                            asignacion: asignacion,
                             responses: resultados
                                 .map((r) => r.hisResultadoEncuesta)
                                 .toList(),
-                          ),
-                          const SizedBox(height: 30),
-                          _buildInterpretacionButton(
-                            "Interpretación Predominancia por Estilo",
-                            datos: resultados.toString(),
-                            mensaje:
-                                "¿Qué interpretación puedes darme de este gráfico?",
                           ),
                           const SizedBox(height: 30),
                           AppTexts.diagrama(
                               'Gráfico de Barras - Total de Estilos por Estudiante'),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 30),
                           AreaPredominantStylesChart(
+                            id: "$uniqueId nono",
+                            asignacion: asignacion,
                             responses: resultados
                                 .map((r) => r.hisResultadoEncuesta)
                                 .toList(),
                           ),
                           const SizedBox(height: 30),
-                          _buildInterpretacionButton(
-                            "Interpretación Predominancia por Estilo",
-                            datos: resultados.toString(),
-                            mensaje:
-                                "¿Qué interpretación puedes darme de este gráfico?",
-                          ),
+                          AppTexts.diagrama('Cuadro con Promedios'),
                           const SizedBox(height: 30),
-                          AppTexts.diagrama(
-                              'Diagrama de Dispersión - Nota de Estudiante por Estilo'),
-                          const SizedBox(height: 10),
-                          StylesVsAverageChart(resultados: resultados),
-                          const SizedBox(height: 30),
-                          _buildInterpretacionButton(
-                            "Interpretación Diagrama de Dispersión",
-                            datos: resultados.toString(),
-                            mensaje:
-                                "¿Qué interpretación puedes darme de este gráfico?",
+                          StylesVsAverageChart(
+                            id: "$uniqueId sino",
+                            asignacion: asignacion,
+                            resultados: resultados,
                           ),
                         ],
                       );
                     } else {
-                      // Mostrar las tablas predeterminadas
                       return Column(
                         children: [
                           AppTexts.diagrama(
-                              'Gráfico de Barras - Total de Estudiantes'),
-                          const SizedBox(height: 10),
-                          TotalEstudiantesBarChart(estudiantes: resultados),
+                              'Total de respuestas de estudiantes'),
                           const SizedBox(height: 30),
-                          _buildInterpretacionButton(
-                            "Interpretación Total de Estudiantes",
-                            datos: resultados.toString(),
-                            mensaje:
-                                "¿Qué interpretación puedes darme de este gráfico?",
+                          RespuestaEncuestaTable(
+                            respondieronEncuesta: resultados.length,
+                            totalEstudiantes: estudiantes!.length,
+                            noRespondieron:
+                                estudiantes.length - resultados.length,
                           ),
+                          const SizedBox(height: 50),
+                          AppTexts.diagrama(
+                              'Gráfico de Barras - Total de Estudiantes'),
                           const SizedBox(height: 30),
+                          TotalEstudiantesBarChart(
+                            estudiantes: resultados,
+                            id: "$uniqueId b",
+                            asignacion: asignacion,
+                          ),
+                          const SizedBox(height: 50),
                           AppTexts.diagrama(
                               'Gráfico de Barras - Promedio de Notas'),
-                          const SizedBox(height: 10),
-                          ResultadoEncuestaBarChart(estudiantes: resultados),
                           const SizedBox(height: 30),
-                          _buildInterpretacionButton(
-                            "Interpretación Promedio de Notas",
-                            datos: resultados.toString(),
-                            mensaje:
-                                "¿Qué interpretación puedes darme de este gráfico?",
+                          ResultadoEncuestaBarChart(
+                            estudiantes: resultados,
+                            asignacion: asignacion,
+                            id: '$uniqueId a ',
                           ),
                           const SizedBox(height: 30),
                           AppTexts.diagrama(
                               'Diagrama de Dispersión - Nota de Estudiante por Estilo'),
-                          const SizedBox(height: 10),
-                          ResultadoEncuestaScatterChart(
-                              estudiantes: resultados),
                           const SizedBox(height: 30),
-                          _buildInterpretacionButton(
-                            "Interpretación Diagrama de Dispersión",
-                            datos: resultados.toString(),
-                            mensaje:
-                                "¿Qué interpretación puedes darme de este gráfico?",
+                          ResultadoEncuestaScatterChart(
+                            estudiantes: resultados,
+                            id: uniqueId,
+                            asignacion: asignacion,
                           ),
                         ],
                       );

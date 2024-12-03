@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_asignacion_detalle_provider.dart';
+import 'package:encuestas_utn/features/auth/presentation/widgets/curso/custom_editar_notas_curso_box.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/widgets.dart';
 import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class DocenteCursoAsignacionScreen extends ConsumerWidget {
                             children: [
                               const CustomCrearCursoBox(),
                               const CustomAsignarEncuestaCursoBox(),
+                              const CustomEditarNotasCursoBox(),
                               AppSpaces.vertical15,
                               SizedBox(
                                 width: double.infinity,

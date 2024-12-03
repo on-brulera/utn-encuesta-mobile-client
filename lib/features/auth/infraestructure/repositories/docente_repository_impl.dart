@@ -304,9 +304,10 @@ class DocenteRepositoryImpl implements DocenteRepository {
   }
 
   @override
-  Future<Nota?> crearActualizarNota(Nota nota, String token) async {
+  Future<Nota?> crearActualizarNota(Nota nota, bool crear, String token) async {
     try {
-      final response = await estilosAPI.post('/nota',
+      String urlAPi = crear ? '/nota' : '/nota';
+      final response = await estilosAPI.post(urlAPi,
           data: NotaModel.toModel(nota).toJson(), options: addToken(token));
       if (response.statusCode == 201) {
         return NotaModel.fromJson(response.data['data']);
@@ -398,7 +399,11 @@ class DocenteRepositoryImpl implements DocenteRepository {
 
   @override
   Future<List<EstudianteResultado>?> obtenerResultadoEstudiantesCurso(
-      int cursoId, int materiaId, int parcialId, int encuestaId,String token) async {
+      int cursoId,
+      int materiaId,
+      int parcialId,
+      int encuestaId,
+      String token) async {
     try {
       final Map<String, dynamic> jsonData = {
         "cur_id": cursoId,
@@ -429,7 +434,8 @@ class DocenteRepositoryImpl implements DocenteRepository {
   @override
   Future<Mensaje?> iniciarChat(String cedula, bool esEstudiante) async {
     try {
-      final response = await estilosAPI.post('/chat', data: {'cedula': cedula, "esEstudiante": esEstudiante});
+      final response = await estilosAPI.post('/chat',
+          data: {'cedula': cedula, "esEstudiante": esEstudiante});
       if (response.statusCode == 200) {
         return Mensaje.fromJson(response.data);
       } else {
@@ -441,10 +447,14 @@ class DocenteRepositoryImpl implements DocenteRepository {
   }
 
   @override
-  Future<Mensaje?> enviarMensajeChat(String cedula, String mensaje, bool esEstudiante) async {
+  Future<Mensaje?> enviarMensajeChat(
+      String cedula, String mensaje, bool esEstudiante) async {
     try {
-      final response = await estilosAPI
-          .post('/mensaje', data: {'cedula': cedula, "mensaje": mensaje, "esEstudiante": esEstudiante});
+      final response = await estilosAPI.post('/mensaje', data: {
+        'cedula': cedula,
+        "mensaje": mensaje,
+        "esEstudiante": esEstudiante
+      });
       if (response.statusCode == 200) {
         return Mensaje.fromJsonRespuesta(response.data);
       } else {
@@ -454,17 +464,39 @@ class DocenteRepositoryImpl implements DocenteRepository {
       return null;
     }
   }
-  
+
   @override
-  Future<Mensaje?> analizarResultado(String datos, String mensaje) async{
+  Future<Mensaje?> analizarResultado(String datos) async {
     try {
-      final response = await estilosAPI
-          .post('/interpretacion/encuesta', data: {'texto_datos': datos, "mensaje": mensaje});
+      final response = await estilosAPI.post('/interpretacion/encuesta',
+          data: {'texto_datos': datos});
       if (response.statusCode == 200) {
         return Mensaje.fromJsonRespuesta(response.data);
       } else {
         return null;
       }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<bool?> eliminarASignacionesCurso(
+      int encuestaId,
+      int cursoId,
+      int materiaId,
+      int usuarioAsignador,
+      int parcialSeleccionado,
+      String token) async {
+    try {
+      final response = await estilosAPI.post('/asignaciones/eliminar', data: {
+        "enc_id": encuestaId,
+        "cur_id": cursoId,
+        "mat_id": materiaId,
+        "usu_id_asignador": usuarioAsignador,
+        "par_parcial_seleccionado": parcialSeleccionado
+      });
+      return response.statusCode == 200;
     } catch (e) {
       return null;
     }

@@ -28,11 +28,14 @@ class ExcelService {
           final row = rows![i];
 
           final estudiante = Estudiante(
-            nombre: row[0]?.value?.toString() ?? '',
-            cedula: row[1]?.value?.toString() ?? '',
+            nombre: row[1]?.value?.toString() ?? '',
+            cedula: row[0]?.value?.toString() ?? '',
             nota1: double.tryParse(row[2]?.value.toString() ?? '0') ?? 0.0,
             nota2: double.tryParse(row[3]?.value.toString() ?? '0') ?? 0.0,
-            promedio: double.tryParse(row[4]?.value.toString() ?? '0') ?? 0.0,
+            promedio: ((double.tryParse(row[2]?.value.toString() ?? '0') ??
+                        0.0) +
+                    (double.tryParse(row[3]?.value.toString() ?? '0') ?? 0.0)) /
+                2,
           );
 
           estudiantes.add(estudiante);

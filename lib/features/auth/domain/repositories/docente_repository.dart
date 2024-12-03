@@ -28,7 +28,7 @@ abstract class DocenteRepository {
 
   //PARA LA CREACIÓN DE NOTAS
 
-  Future<Nota?> crearActualizarNota(Nota nota, String token);
+  Future<Nota?> crearActualizarNota(Nota nota, bool crear,String token);
 
   //PARA OBTENER LISTAS DE DATOS
 
@@ -70,5 +70,8 @@ abstract class DocenteRepository {
   Future<Mensaje?> enviarMensajeChat(
       String cedula, String mensaje, bool esEstudiante);
 
-  Future<Mensaje?> analizarResultado(String datos, String mensaje);
+  Future<Mensaje?> analizarResultado(String datos);
+
+  //PARA ELIMINAR DATOS
+  Future<bool?> eliminarASignacionesCurso(int encuestaId, int cursoId, int materiaId, int usuarioAsignador, int parcialSeleccionado, String token);
 }

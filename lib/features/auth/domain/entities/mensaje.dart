@@ -8,6 +8,8 @@ class Mensaje {
   factory Mensaje.fromJson(Map<String, dynamic> json ) => Mensaje(text: json['mensaje'], fromWho: FromWho.ia);
   factory Mensaje.fromJsonRespuesta(Map<String, dynamic> json) =>
       Mensaje(text: json['respuesta'], fromWho: FromWho.ia);
+
+  
 }
 
 enum FromWho { me, ia }

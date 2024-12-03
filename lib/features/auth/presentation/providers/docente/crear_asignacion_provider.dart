@@ -73,6 +73,7 @@ class CrearAsignacionNotifier extends StateNotifier<CrearAsignacionState> {
                 materiaId: materiaId,
                 parcialId: parcialId,
                 nota: parcialId == 1 ? estudiante.nota1 : estudiante.nota2),
+            true,
             token);
         await docenteRepository.crearAsignacion(
             Asignacion(
@@ -105,6 +106,77 @@ class CrearAsignacionNotifier extends StateNotifier<CrearAsignacionState> {
         isLoading: false,
         error: 'Error al crear la asignación: ${e.toString()}',
       );
+    }
+  }
+
+  Future<void> actualizarNota(List<Estudiante> estudiantes, int cursoId,
+      int materiaId, int parcialId) async {
+    state =
+        state.copyWith(isLoading: true, error: null, asignacionCreada: null);
+    try {
+      //OBTENER NOTAS DEL CURSO
+      List<Estudiante>? estudiantesConNota = await docenteRepository
+          .obtenerEstudiantesByCursoIdMateriaId(cursoId, materiaId, token);
+
+      //REVISAR SI EL USUARIO EXISTE
+      for (Estudiante estudiante in estudiantesConNota!) {
+        await docenteRepository.crearActualizarNota(
+            Nota(
+                id: parcialId == 1 ? estudiante.nota1Id : estudiante.nota2Id,
+                usuarioId: estudiante.usuarioId,
+                cursoId: cursoId,
+                materiaId: materiaId,
+                parcialId: parcialId,
+                nota: parcialId == 1 ? estudiante.nota1 : estudiante.nota2),
+            false,
+            token);
+      }
+
+      state = state.copyWith(
+          isLoading: false,
+          asignacionCreada: Asignacion(
+              encuestaId: 0,
+              usuarioId: 0,
+              cursoId: 0,
+              materiaId: 0,
+              descripcion: '',
+              fechaCompletado: DateTime.now(),
+              realizado: false,
+              usuIdAsignador: 0,
+              parcialSeleccionado: 0));
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Error al editar la nota: ${e.toString()}',
+      );
+    }
+  }
+
+  Future<bool?> eliminarAsignaciones(
+    int encuestaId,
+    int cursoId,
+    int materiaId,
+    int usuarioAsignador,
+    int parcialSeleccionado,
+  ) async {
+    state =
+        state.copyWith(isLoading: true, error: null, asignacionCreada: null);
+    try {
+      bool? responde = await docenteRepository.eliminarASignacionesCurso(
+          encuestaId,
+          cursoId,
+          materiaId,
+          idUsuarioDocente,
+          parcialSeleccionado,
+          token);
+      state = state.copyWith(isLoading: false);
+      return responde;
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Error al crear la asignación: ${e.toString()}',
+      );
+      return false;
     }
   }
 }
