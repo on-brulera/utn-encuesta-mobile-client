@@ -1,16 +1,23 @@
-# encuestas_utn
+# Facultad de Ingeniería en Ciencias Aplicadas (FICA)
 
-A new Flutter project.
+A client to use Estilos API.
 
-## Getting Started
+App for UTN students and professors
 
-This project is a starting point for a Flutter application.
+## Tesista
 
-A few resources to get you started if this is your first Flutter project:
+- [x] _Ramirez Henry_
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## To run Flutter project on local:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone this repository
+
+```bash
+git clone https://github.com/on-brulera/encuesta-estilos-mobile-app.git
+```
+2. Copy .env-template and to the copy rename to .env and configurated your variables
+
+3. Install flutter dependencies 
+```bash
+flutter pub get
+```
