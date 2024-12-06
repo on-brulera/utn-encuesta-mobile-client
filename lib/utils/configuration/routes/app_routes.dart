@@ -7,6 +7,27 @@ import 'package:flutter/material.dart';
 final appRoutes = GoRouter(
   initialLocation: '/${LoginScreen.screenName}',
   routes: [
+    //PARA EL ADMINISTRADOR
+    GoRoute(
+      path: '/${AdminMenuScreen.screenName}',
+      name: AdminMenuScreen.screenName,
+      builder: (context, state) => const AdminMenuScreen(),
+    ),
+    GoRoute(
+      path: '/${AdminDocenteScreen.screenName}',
+      name: AdminDocenteScreen.screenName,
+      builder: (context, state) => const AdminDocenteScreen(),
+    ),
+    GoRoute(
+      path: '/${AdminEstudianteteScreen.screenName}',
+      name: AdminEstudianteteScreen.screenName,
+      builder: (context, state) => const AdminEstudianteteScreen(),
+    ),
+    GoRoute(
+      path: '/${AdminPerfilScreen.screenName}',
+      name: AdminPerfilScreen.screenName,
+      builder: (context, state) => const AdminPerfilScreen(),
+    ),
     //RUTAS PARA DOCENTES Y ESTUDIANTES
     GoRoute(
       path: '/${LoginScreen.screenName}',

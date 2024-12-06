@@ -74,10 +74,29 @@ class DocenteMenuDScreen extends ConsumerWidget {
         texto: 'Habla con IA sobre los estilos de aprendizaje',
         callback: () async {
           try {
-            // Esperar a que la operación asíncrona se complete
-            await ref.read(mensajeProvider.notifier).iniciarChat(UsuarioChat.docente);
+            // Mostrar un diálogo de carga
+            showDialog(
+              context: context,
+              barrierDismissible:
+                  false, // Evita que el usuario cierre el diálogo manualmente
+              builder: (BuildContext context) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            );
 
-            // Verificar que el contexto sigue montado antes de navegar
+            // Esperar a que la operación asíncrona se complete
+            await ref
+                .read(mensajeProvider.notifier)
+                .iniciarChat(UsuarioChat.docente);
+
+            // Cerrar el diálogo de carga
+            if (context.mounted) {
+              Navigator.of(context).pop();
+            }
+
+            // Navegar a la pantalla del chat
             if (context.mounted) {
               context.pushNamed(
                 ChatScreen.screenName,
@@ -85,8 +104,9 @@ class DocenteMenuDScreen extends ConsumerWidget {
               );
             }
           } catch (e) {
-            // Manejar errores si ocurren durante la operación asíncrona
+            // Cerrar el diálogo de carga en caso de error
             if (context.mounted) {
+              Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Error al iniciar el chat: $e')),
               );

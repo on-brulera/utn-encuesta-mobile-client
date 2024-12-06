@@ -27,16 +27,6 @@ class SessionNotifier extends StateNotifier<SessionState> {
       final user = await authRepository.login(usuario, password);
       if (user != null) {
         state = state.copyWith(user: user, token: user.token);
-      } else {
-        state = state.copyWith(
-            user: User(
-                id: 'id',
-                usuario: 'usuario',
-                password: 'password',
-                rol: 'DOC',
-                cedula: '1002003004',
-                cursoId: 1),
-            token: 'jajaja');
       }
     } catch (e) {
       // print("Error en la autenticación: $e");
@@ -45,7 +35,7 @@ class SessionNotifier extends StateNotifier<SessionState> {
 
   void logout() async {
     try {
-      await authRepository.logout(state.user!.id, state.token);      
+      await authRepository.logout(state.user!.id, state.token);
     } catch (e) {
       // print("Error en la autenticación: $e");
     }

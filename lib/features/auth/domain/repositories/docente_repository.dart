@@ -21,6 +21,8 @@ abstract class DocenteRepository {
   Future<Persona?> crearPersona(Persona persona, String token);
 
   Future<User?> crearEstudiante(User usuario, String token);
+  
+  Future<User?> crearDocente(User usuario, String token);
 
   //PARA LA CREACIÓN DE ASIGNACIONES
 

@@ -14,12 +14,6 @@ List<MenuOpcions> opcionesMenuDocente = [
     imagen: AppAssets.curso,
     callback: () {},
   ),
-  // MenuOpcions(
-  //   titulo: 'Estadística',
-  //   descripcion: '¡Observa los resultados de tus encuestas!',
-  //   imagen: AppAssets.grafico,
-  //   callback: () {},
-  // ),
   MenuOpcions(
     titulo: 'Perfil',
     descripcion: '¡Mira una breve descripción de tu perfil!',
@@ -41,12 +35,27 @@ List<MenuOpcions> opcionesMenuEstudiante = [
     imagen: AppAssets.curso,
     callback: () {},
   ),
-  // MenuOpcions(
-  //   titulo: 'Estadística',
-  //   descripcion: '¡Observa los resultados de tus encuestas!',
-  //   imagen: AppAssets.grafico,
-  //   callback: () {},
-  // ),
+  MenuOpcions(
+    titulo: 'Perfil',
+    descripcion: '¡Mira una breve descripción de tu perfil!',
+    imagen: AppAssets.perfil,
+    callback: () {},
+  ),
+];
+
+List<MenuOpcions> opcionesMenuAdmin = [
+  MenuOpcions(
+    titulo: 'Gestionar Docentes',
+    descripcion: '¡Lista Docentes y crea usuarios docentes!',
+    imagen: AppAssets.encuesta,
+    callback: () {},
+  ),
+  MenuOpcions(
+    titulo: 'Gestionar Estudiantes',
+    descripcion: 'Lista estudianes y gestiona sus contraseñas',
+    imagen: AppAssets.curso,
+    callback: () {},
+  ),
   MenuOpcions(
     titulo: 'Perfil',
     descripcion: '¡Mira una breve descripción de tu perfil!',

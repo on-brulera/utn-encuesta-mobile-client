@@ -43,7 +43,7 @@ class UserModel extends User {
       "cur_id": cursoId,
       "per_cedula": cedula,
       "usu_usuario": 'D$cedula',
-      "usu_password": 'D$cedula',
+      "usu_password": password,
       "rol_codigo": 'DOC',
       "usu_estado": false
     };

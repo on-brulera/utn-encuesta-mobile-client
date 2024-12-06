@@ -1,3 +1,9 @@
+//PARA EL ADMIN
+export 'package:encuestas_utn/features/auth/presentation/screens/admin/admin_estudiante_screen.dart';
+export 'package:encuestas_utn/features/auth/presentation/screens/admin/admin_docente_screen.dart';
+export 'package:encuestas_utn/features/auth/presentation/screens/admin/admin_perfil_screen.dart';
+export 'package:encuestas_utn/features/auth/presentation/screens/admin/admin_menu_screen.dart';
+
 //PARA ESTUDIANTES
 export 'package:encuestas_utn/features/auth/presentation/screens/estudiante/mirar_encuesta/estudiante_mirar_encuesta__cursoscreen.dart';
 export 'package:encuestas_utn/features/auth/presentation/screens/estudiante/curso/estudiante_asignatura_screen.dart';

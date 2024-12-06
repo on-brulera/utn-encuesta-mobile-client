@@ -287,6 +287,22 @@ class DocenteRepositoryImpl implements DocenteRepository {
   }
 
   @override
+  Future<User?> crearDocente(User usuario, String token) async {
+    try {
+      final response = await estilosAPI.post('/usuario',
+          data: UserModel.toModel(usuario).toJsonDocente(),
+          options: addToken(token));
+      if (response.statusCode == 201) {
+        return UserModel.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
   Future<Asignacion?> crearAsignacion(
       Asignacion asignacion, String token) async {
     try {
@@ -468,8 +484,8 @@ class DocenteRepositoryImpl implements DocenteRepository {
   @override
   Future<Mensaje?> analizarResultado(String datos) async {
     try {
-      final response = await estilosAPI.post('/interpretacion/encuesta',
-          data: {'texto_datos': datos});
+      final response = await estilosAPI
+          .post('/interpretacion/encuesta', data: {'texto_datos': datos});
       if (response.statusCode == 200) {
         return Mensaje.fromJsonRespuesta(response.data);
       } else {
