@@ -71,7 +71,7 @@ class UserNotifier extends StateNotifier<UserState> {
               password: password,
               rol: 'DOC',
               cedula: cedula,
-              cursoId: 11),
+              cursoId: 1),
           token);
 
       if (docente != null) {
