@@ -21,3 +21,18 @@ git clone https://github.com/on-brulera/utn-encuesta-mobile-client
 ```bash
 flutter pub get
 ```
+
+4. Para cambiar el nombre de la app
+```bash
+dart run change_app_package_name:main com.utnficaibarra.encuestautn
+```
+
+5. Para cambiar el icono de la app
+```bash
+dart run flutter_launcher_icons
+```
+
+5. Para Generar el Boundle (AAB) para Dispositivos Android
+```bash
+flutter build appbundle
+```

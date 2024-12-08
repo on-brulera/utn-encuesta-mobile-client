@@ -1,4 +1,4 @@
-package com.example.encuestas_utn
+package com.utnficaibarra.encuestautn
 
 import io.flutter.embedding.android.FlutterActivity
 
