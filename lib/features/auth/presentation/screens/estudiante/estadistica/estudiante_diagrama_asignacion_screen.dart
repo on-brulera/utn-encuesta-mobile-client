@@ -1,4 +1,5 @@
 import 'package:encuestas_utn/features/auth/domain/entities/entities.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/docente/interpretacion_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/estudiante/estudiante_historial_encuesta_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/stacked_bar_chart.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -118,6 +119,46 @@ class _EstudianteEncuestaDetallesScreenState
             _buildInfoEncuestaCard(historial, ''),
             const SizedBox(height: 50),
             ResultadoEncuestaChart(notasEstudiante: notasMap),
+            const SizedBox(height: 50),
+            ElevatedButton(
+              onPressed: () {
+                ref
+                    .read(interpretacionProvider(widget.idAsignacion.toString())
+                        .notifier)
+                    .cargarInterpretacion(
+                        'Quiero una interpretación y explicación en no más de 125 palabras para que me expliquen el siguiente resultado de estilo de aprendizaje que tengo: ${historial.resultadoEncuesta}');
+              },
+              child: const Text("Cargar Interpretación"),
+            ),
+            const SizedBox(height: 40),
+            Consumer(
+              builder: (context, ref, child) {
+                final interpretacionState = ref.watch(
+                    interpretacionProvider(widget.idAsignacion.toString()));
+
+                if (interpretacionState.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (interpretacionState.error != null) {
+                  return Text(
+                    interpretacionState.error!,
+                    style: const TextStyle(color: Colors.red),
+                  );
+                }
+
+                if (interpretacionState.interpretacion != null) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      interpretacionState.interpretacion!,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  );
+                }
+                return const SizedBox(); // Devuelve un espacio vacío si no hay nada que mostrar.
+              },
+            ),
             const SizedBox(height: 200),
           ],
         ),
@@ -136,6 +177,46 @@ class _EstudianteEncuestaDetallesScreenState
               "Los resultados obtenidos reflejan los estilos de aprendizaje predominantes en cada dimensión evaluada. A continuación, se presenta un análisis detallado de cada estilo, indicando la diferencia entre las preferencias, el estilo predominante identificado y los valores correspondientes a cada dimensión evaluada"),
           const SizedBox(height: 50),
           StackedBarChart(data: resultadoEncuestaData),
+          const SizedBox(height: 50),
+          ElevatedButton(
+            onPressed: () {
+              ref
+                  .read(interpretacionProvider(widget.idAsignacion.toString())
+                      .notifier)
+                  .cargarInterpretacion(
+                      'Quiero una interpretación y explicación en no más de 125 palabras para que me expliquen el siguiente resultado de estilo de aprendizaje que tengo: ${historial.resultadoEncuesta}');
+            },
+            child: const Text("Cargar Interpretación"),
+          ),
+          Consumer(
+            builder: (context, ref, child) {
+              final interpretacionState = ref.watch(
+                  interpretacionProvider(widget.idAsignacion.toString()));
+
+              if (interpretacionState.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (interpretacionState.error != null) {
+                return Text(
+                  interpretacionState.error!,
+                  style: const TextStyle(color: Colors.red),
+                );
+              }
+
+              if (interpretacionState.interpretacion != null) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    interpretacionState.interpretacion!,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                );
+              }
+
+              return const SizedBox(); // Devuelve un espacio vacío si no hay nada que mostrar.
+            },
+          ),
           const SizedBox(height: 200),
         ],
       ),
