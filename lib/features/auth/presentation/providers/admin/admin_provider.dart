@@ -64,7 +64,7 @@ class UserNotifier extends StateNotifier<UserState> {
       // Lógica para crear el docente
       await docenteRepository.crearPersona(
           Persona(cedula: cedula, nombres: nombre), token);
-      User? docente = await docenteRepository.crearEstudiante(
+      User? docente = await docenteRepository.crearDocente(
           User(
               id: '0',
               usuario: 'D$cedula',

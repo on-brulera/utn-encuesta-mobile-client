@@ -196,7 +196,7 @@ class ResultadoEncuestaChart extends StatelessWidget {
       child: BarChart(
         BarChartData(
           alignment: BarChartAlignment.spaceAround,
-          maxY: maxNota + 0.5, // Suponiendo que la escala es de 0 a 5.
+          maxY: maxNota + 1, // Suponiendo que la escala es de 0 a 5.
           barGroups:
               notasEstudiante.entries.toList().asMap().entries.map((mapEntry) {
             final index = mapEntry.key; // Índice de la entrada.
@@ -219,7 +219,7 @@ class ResultadoEncuestaChart extends StatelessWidget {
                 showTitles: true,
                 interval: 1, // Espaciado en el eje Y.
                 getTitlesWidget: (double value, TitleMeta meta) {
-                  return Text(value.toString(),
+                  return Text(value.toInt().toString(),
                       style: const TextStyle(fontSize: 12));
                 },
               ),

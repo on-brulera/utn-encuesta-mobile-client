@@ -36,6 +36,7 @@ class SessionNotifier extends StateNotifier<SessionState> {
   void logout() async {
     try {
       await authRepository.logout(state.user!.id, state.token);
+      state = SessionState();
     } catch (e) {
       // print("Error en la autenticación: $e");
     }
