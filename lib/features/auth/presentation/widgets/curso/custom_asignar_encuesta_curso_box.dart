@@ -263,7 +263,7 @@ class _CustomAsignarEncuestaCursoBoxState
               if (!mounted) return;
 
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error: $e')),
+                const SnackBar(content:Text('No se puede cargar el excel, revise el formato del excel en el manual antes de subirlo')),
               );
             }
           },

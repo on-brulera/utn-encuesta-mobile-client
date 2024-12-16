@@ -32,7 +32,13 @@ dart run change_app_package_name:main com.utnficaibarra.encuestautn
 dart run flutter_launcher_icons
 ```
 
-5. Para Generar el Boundle (AAB) para Dispositivos Android
+6. Para Generar el Boundle (AAB) para Dispositivos Android si se piensa publicar en Google Play
 ```bash
 flutter build appbundle
+```
+
+
+7. Para Generar el APK 
+```bash
+flutter build apk --split-per-abi
 ```

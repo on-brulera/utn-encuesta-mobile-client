@@ -1,4 +1,5 @@
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/curso_asignacion_provider.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_curso_provider.dart';
 import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -172,10 +173,10 @@ class CustomCrearCursoBoxContent extends ConsumerWidget {
               backgroundColor: exito ? Colors.green : Colors.red,
             ),
           );
+          await ref.read(listaCursoProvider.notifier).obtenerTodosCursos();
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.redAccent,
-          
         ),
         child: const Text(
           'Guardar Curso',

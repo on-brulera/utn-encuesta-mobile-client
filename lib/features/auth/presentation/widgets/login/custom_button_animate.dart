@@ -121,7 +121,7 @@ class _CustomButtonAnimateState extends ConsumerState<CustomButtonAnimate> {
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Login fallido')),
+            const SnackBar(content: Text('Usuario o contraseña incorrecta')),
           );
         }
       }
