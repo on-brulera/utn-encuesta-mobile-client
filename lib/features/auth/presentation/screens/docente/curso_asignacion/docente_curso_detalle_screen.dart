@@ -227,6 +227,13 @@ class _DocenteEncuestaDetallesScreenState
                                 estudiantes.length - resultados.length,
                           ),
                           const SizedBox(height: 50),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                                onPressed: () {},
+                                child: const Text('Estrategia')),
+                          ),
+                          const SizedBox(height: 50),
                           AppTexts.diagrama(
                               'Gráfico de Barras - Sub Estilo Más Predominante'),
                           const SizedBox(height: 30),
@@ -269,6 +276,13 @@ class _DocenteEncuestaDetallesScreenState
                             totalEstudiantes: estudiantes!.length,
                             noRespondieron:
                                 estudiantes.length - resultados.length,
+                          ),
+                          const SizedBox(height: 50),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                                onPressed: () {},
+                                child: const Text('Estrategia')),
                           ),
                           const SizedBox(height: 50),
                           AppTexts.diagrama(
