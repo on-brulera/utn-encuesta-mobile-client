@@ -1,4 +1,5 @@
 
+export 'package:encuestas_utn/features/auth/domain/entities/estrategia.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/estudiante_resultado.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/asignacion_detalles.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/rol.dart';
@@ -22,3 +23,4 @@ export 'package:encuestas_utn/features/auth/domain/entities/user.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/pregunta.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/encuesta.dart';
 export 'package:encuestas_utn/features/auth/domain/entities/estilo.dart';
+

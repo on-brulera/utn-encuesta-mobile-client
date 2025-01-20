@@ -100,6 +100,16 @@ final appRoutes = GoRouter(
       name: DocenteCursoDetalleScreen.screenName,
       builder: (context, state) => const DocenteCursoDetalleScreen(),
     ),
+    GoRoute(
+      path: '/${DocenteCursoEstrategiaScreen.screenName}/:idProvider',
+      name: DocenteCursoEstrategiaScreen.screenName,
+      builder: (context, state) {
+        final idProvider =
+            state.pathParameters['idProvider'] ?? ''; // Obtén el parámetro de la ruta
+        return DocenteCursoEstrategiaScreen(idProvider: idProvider);
+      },
+    ),
+
 
     //RUTAS PARA EL ESTUDIANTE
     GoRoute(
