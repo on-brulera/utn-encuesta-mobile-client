@@ -29,6 +29,7 @@ export 'package:encuestas_utn/features/auth/presentation/screens/docente/disenar
 export 'package:encuestas_utn/features/auth/presentation/screens/docente/disenar_encuesta/docente_encuesta_detalles_screen.dart';
 export 'package:encuestas_utn/features/auth/presentation/screens/docente/curso_asignacion/docente_lista_curso_screen.dart';
 export 'package:encuestas_utn/features/auth/presentation/screens/docente/curso_asignacion/docente_curso_detalle_screen.dart';
+export 'package:encuestas_utn/features/auth/presentation/screens/docente/curso_asignacion/docente_curso_estrategia_screen.dart';
 
 //PARA DOCENTES Y ESTUDIANTES
 export 'package:encuestas_utn/features/auth/presentation/screens/login/login_screen.dart';

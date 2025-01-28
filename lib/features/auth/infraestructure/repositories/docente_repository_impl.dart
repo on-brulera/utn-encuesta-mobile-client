@@ -517,4 +517,86 @@ class DocenteRepositoryImpl implements DocenteRepository {
       return null;
     }
   }
+
+  @override
+  Future<Mensaje?> obtenerEstrategias(String silabo) async {
+    try {
+      final response =
+          await estilosAPI.post('/chat/estrategia', data: {'silabo': silabo});
+      if (response.statusCode == 200) {
+        return Mensaje.fromJsonRespuesta(response.data);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Future<Estrategia?> obtenerEstrategiasdeCurso(
+      Estrategia estrategia, token) async {
+    try {
+      final response = await estilosAPI.post('/estrategia/curso', data: {
+        "est_id": estrategia.estiloId,
+        "cur_id": estrategia.cursoId,
+        "cur_nivel": estrategia.cursoNivel,        
+        "enc_id": estrategia.encuestaId,
+        "mat_id": estrategia.materiaId,
+      }, options: addToken(token));
+
+      if (response.statusCode == 200) {
+        return EstrategiaModel.fromJson(response.data['data']);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  @override
+  Future<Estrategia?> crearEstrategiasdeCurso(Estrategia estrategia, token) async {
+    try {
+      final response = await estilosAPI.post('/estrategia', data: {
+        "est_id": estrategia.estiloId,
+        "cur_id": estrategia.cursoId,
+        "cur_nivel": estrategia.cursoNivel,        
+        "enc_id": estrategia.encuestaId,
+        "mat_id": estrategia.materiaId,
+        "prom_notas": estrategia.promedioNotas,
+        "estr_estrategia": estrategia.estrategia
+      }, options: addToken(token));
+
+      if (response.statusCode == 201) {
+        return EstrategiaModel.fromJson(response.data['data']);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  @override
+  Future<Estrategia?> actualizarEstrategiasdeCurso(Estrategia estrategia, token) async{
+    try {
+      final response = await estilosAPI.put('/estrategia/${estrategia.id}',
+          data: {
+            "est_id": estrategia.estiloId,
+            "cur_id": estrategia.cursoId,
+            "cur_nivel": estrategia.cursoNivel,
+            "enc_id": estrategia.encuestaId,
+            "mat_id": estrategia.materiaId,
+            "prom_notas": estrategia.promedioNotas,
+            "estr_estrategia": estrategia.estrategia
+          },
+          options: addToken(token));
+
+      if (response.statusCode == 201) {
+        return EstrategiaModel.fromJson(response.data['data']);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
 }

@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:encuestas_utn/features/auth/domain/entities/asignacion_detalles.dart';
+import 'package:encuestas_utn/features/auth/domain/entities/estrategia.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/estudiante.dart';
 import 'package:encuestas_utn/features/auth/domain/entities/estudiante_resultado.dart';
+import 'package:encuestas_utn/features/auth/presentation/providers/docente/estrategia_provider.dart';
 import 'package:encuestas_utn/features/auth/presentation/providers/docente/lista_asignacion_detalle_provider.dart';
+import 'package:encuestas_utn/features/auth/presentation/screens/docente/curso_asignacion/docente_curso_estrategia_screen.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/area_predominant_styles_chart.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/estudiantes_dynamic_table.dart';
 import 'package:encuestas_utn/features/auth/presentation/widgets/shared/predominant_styles_chart.dart';
@@ -14,6 +17,7 @@ import 'package:encuestas_utn/features/auth/presentation/widgets/shared/total_es
 import 'package:encuestas_utn/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class DocenteCursoDetalleScreen extends ConsumerStatefulWidget {
   static String screenName = 'docente_curso_detalle_screen';
@@ -184,7 +188,7 @@ class _DocenteEncuestaDetallesScreenState
             final index = entry.key;
             final asignacion = entry.value;
             final uniqueId =
-                "asignacion_${index}_${asignacion.encTitulo}_${asignacion.parId}";
+                "asignacion_${index}_${asignacion.encTitulo}_${asignacion.parId}_${asignacion.curId}_${asignacion.matId}";
 
             return ExpansionTile(
               title: AppTexts.softText(asignacion.encTitulo),
@@ -225,6 +229,38 @@ class _DocenteEncuestaDetallesScreenState
                             totalEstudiantes: estudiantes!.length,
                             noRespondieron:
                                 estudiantes.length - resultados.length,
+                          ),
+                          const SizedBox(height: 50),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                              onPressed: () async {
+                                // Obtener los valores necesarios para construir la entidad Estrategia
+                                final estrategia = Estrategia(
+                                  estiloId: asignacion
+                                      .parId, // Coloca los valores reales
+                                  cursoId: asignacion
+                                      .curId, // Coloca los valores reales
+                                  cursoNivel: asignacion.curNivel,
+                                  promedioNotas: "0.0",
+                                  encuestaId: asignacion.encId,
+                                  materiaId: asignacion.matId,
+                                  estrategia: "Sin estrategia",
+                                );
+
+                                // Obtener la estrategia desde el repositorio
+                                await ref
+                                    .read(estrategiaProvider('si $uniqueId').notifier)
+                                    .obtenerEstrategiaDesdeRepositorio(
+                                        estrategia);
+
+                                if (context.mounted) {
+                                  context.pushNamed(
+                                      DocenteCursoEstrategiaScreen.screenName,pathParameters: {'idProvider': 'si $uniqueId'});
+                                }
+                              },
+                              child: const Text('Estrategia'),
+                            ),
                           ),
                           const SizedBox(height: 50),
                           AppTexts.diagrama(
@@ -269,6 +305,41 @@ class _DocenteEncuestaDetallesScreenState
                             totalEstudiantes: estudiantes!.length,
                             noRespondieron:
                                 estudiantes.length - resultados.length,
+                          ),
+                          const SizedBox(height: 50),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                              onPressed: () async {
+                                // Obtener los valores necesarios para construir la entidad Estrategia
+                                final estrategia = Estrategia(
+                                  estiloId: asignacion
+                                      .parId, // Coloca los valores reales
+                                  cursoId: asignacion
+                                      .curId, // Coloca los valores reales
+                                  cursoNivel: asignacion.curNivel,
+                                  promedioNotas: "0.0",
+                                  encuestaId: asignacion.encId,
+                                  materiaId: asignacion.matId,
+                                  estrategia: "Sin estrategia",
+                                );
+
+                                // Obtener la estrategia desde el repositorio
+                                await ref
+                                    .read(estrategiaProvider('si $uniqueId').notifier)
+                                    .obtenerEstrategiaDesdeRepositorio(
+                                        estrategia);
+
+                                if (context.mounted) {
+                                  context.pushNamed(
+                                      DocenteCursoEstrategiaScreen.screenName,
+                                      pathParameters: {
+                                        'idProvider': 'si $uniqueId'
+                                      });
+                                }
+                              },
+                              child: const Text('Estrategia'),
+                            ),
                           ),
                           const SizedBox(height: 50),
                           AppTexts.diagrama(

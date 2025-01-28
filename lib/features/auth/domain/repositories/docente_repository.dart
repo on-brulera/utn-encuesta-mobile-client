@@ -21,7 +21,7 @@ abstract class DocenteRepository {
   Future<Persona?> crearPersona(Persona persona, String token);
 
   Future<User?> crearEstudiante(User usuario, String token);
-  
+
   Future<User?> crearDocente(User usuario, String token);
 
   //PARA LA CREACIÓN DE ASIGNACIONES
@@ -30,7 +30,7 @@ abstract class DocenteRepository {
 
   //PARA LA CREACIÓN DE NOTAS
 
-  Future<Nota?> crearActualizarNota(Nota nota, bool crear,String token);
+  Future<Nota?> crearActualizarNota(Nota nota, bool crear, String token);
 
   //PARA OBTENER LISTAS DE DATOS
 
@@ -74,6 +74,22 @@ abstract class DocenteRepository {
 
   Future<Mensaje?> analizarResultado(String datos);
 
+  Future<Mensaje?> obtenerEstrategias(String silabo);
+
   //PARA ELIMINAR DATOS
-  Future<bool?> eliminarASignacionesCurso(int encuestaId, int cursoId, int materiaId, int usuarioAsignador, int parcialSeleccionado, String token);
+  Future<bool?> eliminarASignacionesCurso(
+      int encuestaId,
+      int cursoId,
+      int materiaId,
+      int usuarioAsignador,
+      int parcialSeleccionado,
+      String token);
+
+  //PARA LAS ESTRATEGIAS
+  
+  Future<Estrategia?> obtenerEstrategiasdeCurso(Estrategia estrategia, token);
+
+  Future<Estrategia?> crearEstrategiasdeCurso (Estrategia estrategia, token);
+  
+  Future<Estrategia?> actualizarEstrategiasdeCurso(Estrategia estrategia, token);
 }
