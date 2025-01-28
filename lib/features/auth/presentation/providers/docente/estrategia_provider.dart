@@ -8,22 +8,29 @@ import 'package:encuestas_utn/features/auth/infraestructure/repositories/docente
 class EstrategiaState {
   final String? estrategia;
   final bool isLoading;
+  final bool tieneEstrategia;
   final String? error;
   Estrategia? entidad;
 
   EstrategiaState(
-      {this.estrategia, this.isLoading = false, this.error, this.entidad});
+      {this.estrategia,
+      this.isLoading = false,
+      this.error,
+      this.entidad,
+      this.tieneEstrategia = false});
 
   EstrategiaState copyWith(
       {String? estrategia,
       bool? isLoading,
+      bool? tieneEstrategia,
       String? error,
       Estrategia? entidad}) {
     return EstrategiaState(
         estrategia: estrategia ?? this.estrategia,
         isLoading: isLoading ?? this.isLoading,
         error: error ?? this.error,
-        entidad: entidad ?? this.entidad);
+        entidad: entidad ?? this.entidad,
+        tieneEstrategia: tieneEstrategia ?? this.tieneEstrategia);
   }
 }
 
@@ -46,14 +53,15 @@ class EstrategiaNotifier extends StateNotifier<EstrategiaState> {
       );
 
       if (mensaje != null) {
-        state.entidad = state.entidad!.copyWith(estrategia: mensaje.text);
-        if (state.entidad != null) {
+        state.entidad = state.entidad?.copyWith(estrategia: mensaje.text);
+        if (state.tieneEstrategia) {
           await docenteRepository.actualizarEstrategiasdeCurso(
               state.entidad!, token);
         } else {
           await docenteRepository.crearEstrategiasdeCurso(
               state.entidad!, token);
-        }        
+          state = state.copyWith(tieneEstrategia: true);
+        }
       }
     } catch (e) {
       state = state.copyWith(
@@ -69,9 +77,10 @@ class EstrategiaNotifier extends StateNotifier<EstrategiaState> {
       final resultado =
           await docenteRepository.obtenerEstrategiasdeCurso(estrategia, token);
       if (resultado != null) {
-        state = state.copyWith(estrategia: resultado.estrategia);
+        state = state.copyWith(
+            estrategia: resultado.estrategia, tieneEstrategia: true);
       }
-      state = state.copyWith(entidad: resultado);
+      state = state.copyWith(entidad: estrategia);
       return resultado;
     } catch (e) {
       state = state.copyWith(error: 'Error al obtener estrategia');
