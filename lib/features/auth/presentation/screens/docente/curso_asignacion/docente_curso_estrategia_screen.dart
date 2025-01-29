@@ -37,11 +37,18 @@ class _DocenteCursoEstrategiaScreenState
     final encuestasCursoAsignacionSelected =
         cursoAsignadoDetallesState.encuestasCursoAsignacionSelected ?? [];
 
-    final String contexto = '''
-      Soy un docente de ${cursoAsignacionSelected?.matNombre} de la carrera de ${cursoAsignacionSelected?.curCarrera},
-      enviame las estrategias en este formato: - Para el tema: Tema tal... - Actividad 1 - Actividad 2 y asi sucesivamente con todos los temas en 50 palabras minimo.
-      que estrategias pedagógicas puedo aplicar para el tema de parendizaje: 
-      ''';
+    final String infoDocente =
+        'Soy un docente de ${cursoAsignacionSelected?.matNombre} de la carrera de ${cursoAsignacionSelected?.curCarrera}.';
+    final String infoTest =
+        'Acabo de utilizar el test: ${encuestasCursoAsignacionSelected.first.encTitulo} para obtener los estilos de aprendizaje del curso.';
+    const String infoSolicitud =
+        'Considerando la materia y test tomandos, recomiendame estrategias, actividades a realizar para el contenido educativo de la parcial: ';
+    const String infoFormato = 'Enviame tu respuesta en el siguiente formato: - Para el tema Tema... - Actividad 1 - Actividad 2 - Para el tema Tema... - Actividad 1 - Actividad 2 y asi sucesivamente.';
+
+    // enviame las estrategias en este formato: - Para el tema: Tema tal... - Actividad 1 - Actividad 2 y asi sucesivamente con todos los temas en 50 palabras minimo.
+    // que estrategias pedagógicas puedo aplicar para el tema de parendizaje:
+
+    final String contexto = '$infoDocente $infoTest $infoSolicitud';
 
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +68,7 @@ class _DocenteCursoEstrategiaScreenState
                 const SizedBox(height: 10),
 
                 // Card 3: Desplegable para estrategia
-                _buildEstrategiaRequest(estrategiaState, contexto),
+                _buildEstrategiaRequest(estrategiaState, contexto, infoFormato),
                 const SizedBox(height: 10),
 
                 // Card 4: Mostrar consulta guardada
@@ -119,7 +126,7 @@ class _DocenteCursoEstrategiaScreenState
   }
 
   Widget _buildEstrategiaRequest(
-      EstrategiaState estrategiaState, String contexto) {
+      EstrategiaState estrategiaState, String contexto, String infoFormato) {
     return ExpansionTile(
       title: AppTexts.subTitle('Solicitar Estrategia'),
       children: [
@@ -150,7 +157,7 @@ class _DocenteCursoEstrategiaScreenState
                         ref
                             .read(
                                 estrategiaProvider(widget.idProvider).notifier)
-                            .obtenerEstrategia('$contexto $textoIngresado');
+                            .obtenerEstrategia('$contexto $textoIngresado. $infoFormato');
                       }
                     },
                     child: estrategiaState.isLoading
